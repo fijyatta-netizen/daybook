@@ -28,7 +28,7 @@ body{margin:0}
 :root{
   /* Light by default; Dark (grey) or Match phone are chosen under Appearance */
   --bg:#EDF0EC; --surface:#FFFFFF; --sunk:#E3E8E3; --ink:#17202C; --muted:#56616E; --line:#D3DAD4;
-  --journal:#4A4FC2; --train:#0B7F74; --food:#B0640E; --habit:#983470; --danger:#B42318;
+  --journal:#4B44E0; --train:#00806F; --food:#B85F00; --habit:#B0247C; --danger:#C4200F;
   --statusbar:#2A2C30;
   --display:'Bricolage Grotesque','Avenir Next',system-ui,sans-serif;
   --body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -38,10 +38,10 @@ body{margin:0}
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#2A2C30; --surface:#35383D; --sunk:#3F4248; --ink:#ECEDEF; --muted:#A9ADB4; --line:#4A4E55;
-  --journal:#9EA2F6; --train:#45C7B7; --food:#EDA953; --habit:#E78BC2; --danger:#FF8478; color-scheme:dark}}
+  --journal:#A3A8FF; --train:#2EE8CF; --food:#FFB53D; --habit:#FF86D0; --danger:#FF7A6B; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#2A2C30; --surface:#35383D; --sunk:#3F4248; --ink:#ECEDEF; --muted:#A9ADB4; --line:#4A4E55;
-  --journal:#9EA2F6; --train:#45C7B7; --food:#EDA953; --habit:#E78BC2; --danger:#FF8478; color-scheme:dark}
+  --journal:#A3A8FF; --train:#2EE8CF; --food:#FFB53D; --habit:#FF86D0; --danger:#FF7A6B; color-scheme:dark}
 
 html,body{min-height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
@@ -952,7 +952,7 @@ function hueName(h){
 }
 function settingsPanel(){
   return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}
-  <p class="hint" style="text-align:center;margin-top:8px">Daybook v20 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
+  <p class="hint" style="text-align:center;margin-top:8px">Daybook v21 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
 }
 function appearanceCard(){
   const t=currentTheme(), opt=[['light','Light'],['dark','Dark'],['system','Match phone']];
