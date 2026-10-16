@@ -1,4 +1,6 @@
 <!doctype html>
+<!-- Daybook. Copyright (c) 2026 Fyat. All rights reserved.
+     This code is published so the app can run in your browser. It is not licensed for copying, modification or redistribution. -->
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
@@ -949,7 +951,8 @@ function hueName(h){
   return n.find(([max])=>h<max)[1];
 }
 function settingsPanel(){
-  return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}`;
+  return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}
+  <p class="hint" style="text-align:center;margin-top:8px">Daybook v20 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
 }
 function appearanceCard(){
   const t=currentTheme(), opt=[['light','Light'],['dark','Dark'],['system','Match phone']];
