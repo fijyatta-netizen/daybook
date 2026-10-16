@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Daybook</title>
+<meta name="description" content="A private, offline log for your days: journal, activity, food and habits.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/j-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Daybook">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" id="themeColor" content="#2A2C30">
+<style>
+@font-face{font-family:'Bricolage Grotesque';src:url(fonts/bricolage.woff2) format('woff2');font-weight:200 800;font-display:swap}
+@font-face{font-family:'Atkinson Hyperlegible';src:url(fonts/atkinson-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Atkinson Hyperlegible';src:url(fonts/atkinson-700.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'IBM Plex Mono';src:url(fonts/plexmono-500.woff2) format('woff2');font-weight:500;font-display:swap}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+/* Layout: a one-hand phone logbook. Sticky day header + week strip, one panel per log, fixed tab bar at the thumb. Each log owns a colour. */
+:root{
+  /* Light by default; Dark (grey) or Match phone are chosen under Appearance */
+  --bg:#EDF0EC; --surface:#FFFFFF; --sunk:#E3E8E3; --ink:#17202C; --muted:#56616E; --line:#D3DAD4;
+  --journal:#4A4FC2; --train:#0B7F74; --food:#B0640E; --habit:#983470; --danger:#B42318;
+  --statusbar:#2A2C30;
+  --display:'Bricolage Grotesque','Avenir Next',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --c:var(--journal);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#2A2C30; --surface:#35383D; --sunk:#3F4248; --ink:#ECEDEF; --muted:#A9ADB4; --line:#4A4E55;
+  --journal:#9EA2F6; --train:#45C7B7; --food:#EDA953; --habit:#E78BC2; --danger:#FF8478; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#2A2C30; --surface:#35383D; --sunk:#3F4248; --ink:#ECEDEF; --muted:#A9ADB4; --line:#4A4E55;
+  --journal:#9EA2F6; --train:#45C7B7; --food:#EDA953; --habit:#E78BC2; --danger:#FF8478; color-scheme:dark}
+
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:620px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--c);outline-offset:2px;border-radius:6px}
+
+/* header */
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{padding-block:10px 12px;display:grid;gap:10px}
+.hue{-webkit-appearance:none;appearance:none;width:100%;height:30px;border-radius:999px;margin:4px 0;cursor:pointer;
+  background:linear-gradient(to right,hsl(0 80% 55%),hsl(45 80% 55%),hsl(90 70% 45%),hsl(150 70% 42%),hsl(195 80% 48%),hsl(240 75% 62%),hsl(285 70% 58%),hsl(330 75% 56%),hsl(360 80% 55%))}
+.hue::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:var(--tc,#fff);border:3px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.3)}
+.hue::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--tc,#fff);border:3px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.hue.off::-webkit-slider-thumb{background:var(--surface)}
+.swatchrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.swatch{font-weight:700;font-size:15px}
+.top::before{content:"";position:absolute;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--statusbar)}
+.backup{display:grid;gap:10px}
+.backup .actions{justify-content:flex-start}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:7;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:700;max-width:calc(100% - 32px);text-align:center}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.14em;text-transform:uppercase}
+.status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.status[data-s="saved"]::before{background:var(--train)}
+.status[data-s="saving"]::before{background:var(--food)}
+.status[data-s="error"]{color:var(--danger)} .status[data-s="error"]::before{background:var(--danger)}
+.dayhead{display:flex;align-items:center;gap:8px}
+.dayhead h1{margin:0;flex:1;min-width:0;font-family:var(--display);font-weight:800;font-size:clamp(24px,7vw,32px);line-height:1.05;letter-spacing:-.01em}
+.dayhead h1 small{display:block;font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--c);margin-bottom:3px}
+.iconbtn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line)}
+.iconbtn svg{width:18px;height:18px}
+.iconbtn:disabled{opacity:.35;cursor:default}
+.todaybtn{font-size:13px;font-weight:700;padding:8px 12px;border-radius:999px;background:var(--ink);color:var(--bg)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{display:grid;justify-items:center;gap:2px;padding:6px 0 7px;border-radius:12px;color:var(--muted)}
+.wd b{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+.wd span{font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.wd[aria-current="date"]{background:var(--ink)} .wd[aria-current="date"] b,.wd[aria-current="date"] span{color:var(--bg)}
+.wd.future{opacity:.4}
+.wd.today:not([aria-current]) b{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.dots{display:flex;gap:3px;height:5px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--line)}
+.dots i.on.j{background:var(--journal)} .dots i.on.t{background:var(--train)} .dots i.on.f{background:var(--food)} .dots i.on.h{background:var(--habit)}
+
+/* panel */
+main{padding-block:16px calc(96px + env(safe-area-inset-bottom,0px));display:grid;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px;min-width:0}
+.label{margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.sechead h2{margin:0;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em}
+.sechead h2 em{font-style:normal;color:var(--c)}
+input[type=text],input[type=password],input:not([type]),input[type=number],textarea,select{width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px}
+textarea{resize:vertical;min-height:140px;line-height:1.5}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.hint{margin:0;font-size:13px;color:var(--muted)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row > *{min-width:0}
+.field{display:grid;gap:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:12px;font-weight:700;background:var(--c);color:var(--surface)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px dashed color-mix(in srgb,var(--c) 60%,var(--line))}
+.btn.ghost::before{content:"+";font-size:20px;line-height:1;color:var(--c)}
+.btn.plain{background:var(--sunk);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.seg .actrm{color:var(--danger)}
+
+.mood{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.moodbtn{display:grid;justify-items:center;gap:4px;padding:10px 2px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-size:12px;color:var(--muted)}
+.moodbtn b{font-family:var(--mono);font-weight:500;font-size:18px;color:var(--ink)}
+.moodbtn[aria-checked="true"]{background:var(--c);border-color:var(--c);color:var(--surface)}
+.moodbtn[aria-checked="true"] b{color:var(--surface)}
+
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;display:grid;gap:2px;min-width:0;border-top:3px solid var(--cc)}
+.chip span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chip b{font-family:var(--mono);font-weight:500;font-size:17px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+.list{display:grid;gap:10px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+.item > div{min-width:0}
+.badge{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c);white-space:nowrap}
+.item h3{margin:0;font-size:16px;font-weight:700;overflow-wrap:anywhere}
+.stats{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.stats small{font-family:var(--body);font-size:12px;color:var(--muted);margin-left:3px}
+.item p{margin:4px 0 0;color:var(--muted);font-size:14px;overflow-wrap:anywhere;white-space:pre-wrap}
+.del{font-size:13px;color:var(--muted);padding:6px 4px;white-space:nowrap}
+.del[data-armed]{color:var(--danger);font-weight:700}
+.sv .hint b{color:var(--ink)}
+.tlday p.learn b{color:var(--ink);font-weight:700}
+.item p.src{font-size:12px;letter-spacing:.02em;margin-top:6px}
+.stars{color:var(--food);letter-spacing:2px;font-size:14px}
+.phs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ph{width:76px;height:76px;border-radius:10px;overflow:hidden;background:var(--sunk);flex:none;display:block;position:relative;padding:0}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph.missing{display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center}
+.ph.missing::after{content:"No photo"}
+.phadd{width:76px;height:76px;border-radius:10px;border:1px dashed color-mix(in srgb,var(--food) 60%,var(--line));display:grid;place-items:center;align-content:center;gap:2px;color:var(--food);font-size:12px;font-weight:700;background:transparent}
+.phadd svg{width:22px;height:22px}
+.tlph{display:flex;gap:6px}
+.tlph .ph{width:54px;height:54px;border-radius:8px}
+.pickfile{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.viewer{position:fixed;inset:0;z-index:20;background:#000;color:#fff;display:grid;grid-template-rows:minmax(0,1fr) auto;
+  padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.viewer img{max-width:100%;max-height:100%;object-fit:contain;place-self:center}
+.vbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.vbar .vclose{min-height:44px;padding:0 20px;border-radius:12px;background:#2a2d33;color:#fff;font-weight:700}
+.vbar .del{color:#ff9b91}
+.vbar .del[data-armed]{color:#ff6b5e}
+
+.weektable{display:grid;gap:0}
+.wrow{display:grid;grid-template-columns:1fr auto auto auto;gap:14px;padding:9px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;align-items:baseline}
+.wrow:first-child{border-top:0}
+.wrow span:first-child{font-family:var(--body);font-weight:700}
+.wrow span{text-align:right} .wrow span:first-child{text-align:left}
+.wrow.total{color:var(--muted)}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:64px;padding-top:4px}
+.bars div{display:grid;gap:4px;justify-items:center;height:100%;align-content:end}
+.bars i{display:block;width:100%;max-width:26px;border-radius:5px 5px 2px 2px;background:var(--train);min-height:2px}
+.bars i.zero{background:var(--line)}
+.bars span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:var(--surface);font-weight:700}
+.rate{display:flex;gap:4px}
+.rate button{font-size:24px;line-height:1;color:var(--line);padding:2px}
+.rate button.on{color:var(--food)}
+input[type=range]{width:100%;accent-color:var(--c)}
+
+.habit{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.habit > div{min-width:0}
+.check{width:44px;height:44px;border-radius:12px;border:2px solid var(--line);display:grid;place-items:center;background:var(--bg)}
+.check svg{width:22px;height:22px;opacity:0}
+.check[aria-checked="true"]{background:var(--habit);border-color:var(--habit);color:var(--surface)}
+.check[aria-checked="true"] svg{opacity:1}
+.habit h3{margin:0;font-size:16px;overflow-wrap:anywhere}
+.habit .streak{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.seven{display:flex;gap:4px}
+.seven i{width:9px;height:9px;border-radius:3px;background:var(--line)}
+.seven i.on{background:var(--habit)}
+.progress{height:8px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--habit);border-radius:999px;transition:width .3s}
+.big{font-family:var(--mono);font-size:28px;font-weight:500;font-variant-numeric:tabular-nums}
+
+.tl{display:grid;gap:10px}
+.tlday{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;display:grid;gap:8px;width:100%}
+.tlday header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.tlday h3{margin:0;font-family:var(--display);font-weight:600;font-size:18px}
+.tlday .m{font-family:var(--mono);font-size:13px;color:var(--journal)}
+.tlday p{margin:0;font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--sunk);font-variant-numeric:tabular-nums}
+.tag.t{box-shadow:inset 3px 0 0 var(--train)} .tag.f{box-shadow:inset 3px 0 0 var(--food)} .tag.h{box-shadow:inset 3px 0 0 var(--habit)}
+
+.empty{border:1px dashed var(--line);border-radius:14px;padding:20px;text-align:center;color:var(--muted);font-size:14px;display:grid;gap:4px}
+.empty b{color:var(--ink);font-size:15px}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+.tabs .in{max-width:620px;margin:0 auto;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.tab{display:grid;justify-items:center;gap:3px;padding:9px 0 10px;font-size:10.5px;min-width:0;font-weight:700;letter-spacing:.03em;color:var(--muted);position:relative}
+.tab svg{width:22px;height:22px}
+.tab[aria-selected="true"]{color:var(--tc)}
+.tab[aria-selected="true"]::before{content:"";position:absolute;top:0;left:28%;right:28%;height:3px;border-radius:0 0 3px 3px;background:var(--tc)}
+.ex{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:8px;background:var(--bg)}
+.ex header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ex h4{margin:0;font-size:15px;overflow-wrap:anywhere;min-width:0}
+textarea.bullets{min-height:96px}
+textarea.notebody{min-height:260px}
+.notehead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#noteTitle{font-weight:700;font-size:18px}
+.excount{display:flex;align-items:center;gap:10px}
+.excount input{width:76px;padding:9px 6px;text-align:center;font-family:var(--mono);background:var(--surface)}
+.exgrid{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:6px;align-items:center}
+.exgrid .h{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center}
+.exgrid .sn{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;padding-right:2px}
+.exgrid input{padding:9px 6px;text-align:center;font-family:var(--mono);background:var(--surface);min-width:0}
+.exlist{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:5px}
+.exlist li{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;font-size:15px}
+.exlist b{font-weight:700;overflow-wrap:anywhere}
+.exlist span.set{flex-basis:100%;font-size:13px;white-space:nowrap}
+.exlist span.set i{font-style:normal;display:inline-block;min-width:1.6em;opacity:.6}
+.exlist span{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.itbtns{display:grid;gap:2px;justify-items:end}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+<script>
+try{var t=JSON.parse(localStorage.getItem('daybook.theme')||'"dark"');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}
+catch(e){document.documentElement.setAttribute('data-theme','dark')}
+try{var h=JSON.parse(localStorage.getItem('daybook.textHue'));if(typeof h==='number'){var r=document.documentElement,a=r.getAttribute('data-theme'),
+  d=a?a==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+  r.style.setProperty('--ink',d?'hsl('+h+' 75% 80%)':'hsl('+h+' 70% 25%)');r.style.setProperty('--muted',d?'hsl('+h+' 30% 70%)':'hsl('+h+' 25% 38%)')}}catch(e){}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="bar"><div class="brand">Daybook</div><span id="status" class="status" data-s="saved">Saved on this phone</span></div>
+    <div class="dayhead">
+      <button class="iconbtn" data-action="day" data-n="-1" aria-label="Previous day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <h1 id="dayTitle"></h1>
+      <button class="todaybtn" id="todayBtn" data-action="today" hidden>Today</button>
+      <button class="iconbtn" id="nextBtn" data-action="day" data-n="1" aria-label="Next day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div id="week" class="week" aria-label="This week"></div>
+  </div>
+</header>
+
+<main class="wrap" id="panel" aria-live="polite"></main>
+
+<nav class="tabs" aria-label="Logs"><div class="in" role="tablist">
+  <button class="tab" role="tab" data-action="tab" data-tab="journal" style="--tc:var(--journal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M9 8h6"/></svg>Journal</button>
+  <button class="tab" role="tab" data-action="tab" data-tab="training" style="--tc:var(--train)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>Activity</button>
+  <button class="tab" role="tab" data-action="tab" data-tab="food" style="--tc:var(--food)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v8a2 2 0 0 0 2 2v8M11 3v8a2 2 0 0 1-2 2M7 3v5M17 21V3c-2 0-3 3-3 7s1 4 3 4"/></svg>Food</button>
+  <button class="tab" role="tab" data-action="tab" data-tab="habits" style="--tc:var(--habit)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Habits</button>
+  <button class="tab" role="tab" data-action="tab" data-tab="notes" style="--tc:var(--ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>Notes</button>
+  <button class="tab" role="tab" data-action="tab" data-tab="timeline" style="--tc:var(--ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M6 7h12M6 12h9M6 17h11"/></svg>Timeline</button>
+  <button class="tab" role="tab" data-action="tab" data-tab="settings" style="--tc:var(--ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
+</div></nav>
+<div class="toast" id="toast" role="status" hidden></div>
+<input type="file" id="photoPick" class="pickfile" accept="image/*" multiple tabindex="-1" aria-hidden="true">
+<div class="viewer" id="viewer" role="dialog" aria-label="Photo" hidden>
+  <img id="viewerImg" alt="">
+  <div class="vbar"><button class="vclose" data-action="closephoto">Close</button><button class="del" data-action="rmphoto">Delete photo</button></div>
+</div>
+
+<script>
+(() => {
+const MOODS = ['Rough','Low','Okay','Good','Great'];
+const SPORTS = ['Run','Ride','Swim','Strength','Walk','Other'];
+const NO_DIST = ['Strength','Other'];
+const ACT_KEY = 'daybook.activities';
+const savedActs = ()=>{const a=lsGet(ACT_KEY); return Array.isArray(a)?a.filter(x=>typeof x==='string'&&x.trim()):[]};
+const actOptions = cur=>{const out=[], seen=new Set(); [...SPORTS,...savedActs(),cur].forEach(x=>{if(!x) return; const k=String(x).toLowerCase(); if(!seen.has(k)){seen.add(k); out.push(x)}}); return out};
+const FOOD_KINDS = ['Breakfast','Lunch','Dinner','Snack','Recipe test'];
+const DEFAULT_HABITS = [
+  {id:'sleep',name:'Slept 7+ hours'},{id:'water',name:'Drank 2 litres of water'},
+  {id:'read',name:'Read for 20 minutes'},{id:'mobility',name:'Stretched or did mobility'}];
+const TAB_COLOR = {journal:'--journal',training:'--train',food:'--food',habits:'--habit',notes:'--ink',timeline:'--ink',settings:'--ink'};
+
+const $ = (s,r=document)=>r.querySelector(s);
+const pad = n=>String(n).padStart(2,'0');
+const iso = d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseIso = s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays = (s,n)=>{const d=parseIso(s);d.setDate(d.getDate()+n);return iso(d)};
+const today = ()=>iso(new Date());
+const newId = ()=>Math.random().toString(36).slice(2,10);
+const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lsGet = k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const lsSet = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+
+const state = {
+  date: today(), tab: lsGet('daybook.tab') || 'journal',
+  days: {}, habits: DEFAULT_HABITS, notes: [],
+  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, tlLimit:40, search:''}
+};
+
+const emptyDay = date=>({date, mood:null, highlight:'', notes:'', learned:'', learnedNotes:'', training:[], food:[], habits:{}});
+const getDay = date=>state.days[date] || emptyDay(date);
+const isEmpty = d=>!d.mood && !d.highlight && !d.notes && !d.learned && !d.learnedNotes && !d.training.length && !d.food.length && !Object.values(d.habits||{}).some(Boolean);
+const normalize = (date,o)=>Object.assign(emptyDay(date), o||{}, {date,
+  training:Array.isArray(o?.training)?o.training:[], food:Array.isArray(o?.food)?o.food:[], habits:(o&&typeof o.habits==='object'&&o.habits)||{}});
+
+/* ---------- formatting ---------- */
+function parseDur(s){
+  s=String(s||'').trim(); if(!s) return 0;
+  const p=s.split(':').map(x=>Number(x)); if(p.some(isNaN)) return 0;
+  if(p.length===1) return Math.round(p[0]*60);
+  if(p.length===2) return p[0]*60+p[1];
+  return p[0]*3600+p[1]*60+p[2];
+}
+function fmtDur(sec){
+  sec=Math.round(sec||0); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60;
+  return h?`${h}:${pad(m)}:${pad(s)}`:`${m}:${pad(s)}`;
+}
+function fmtHM(sec){const h=Math.floor(sec/3600), m=Math.round(sec%3600/60); return h?`${h}h ${pad(m)}m`:`${m}m`}
+function distUnit(sport){return sport==='Swim'?'m':'km'}
+function fmtDist(sport,d){return sport==='Swim'?`${Math.round(d).toLocaleString('en-GB')}`:(+d).toFixed(2)}
+function pace(t){
+  if(!t.dist||!t.dur||NO_DIST.includes(t.sport)) return '';
+  if(t.sport==='Ride') return `${(t.dist/(t.dur/3600)).toFixed(1)}<small>km/h</small>`;
+  if(t.sport==='Swim') return `${fmtDur(t.dur/(t.dist/100))}<small>/100m</small>`;
+  return `${fmtDur(t.dur/t.dist)}<small>/km</small>`;
+}
+const longDate = s=>parseIso(s).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+const shortDate = s=>parseIso(s).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year: parseIso(s).getFullYear()!==new Date().getFullYear()?'numeric':undefined});
+function relLabel(s){const t=today(); if(s===t) return 'Today'; if(s===addDays(t,-1)) return 'Yesterday'; if(s===addDays(t,1)) return 'Tomorrow'; return parseIso(s).getFullYear()+''}
+const monday = s=>{const d=parseIso(s); return addDays(s,-((d.getDay()+6)%7))};
+
+/* ---------- saving (all on this phone) ---------- */
+const timers={};
+function setStatus(s,msg){const el=$('#status'); el.dataset.s=s; el.textContent=msg;}
+function statusIdle(){setStatus('saved','Saved on this phone')}
+function writeAll(){
+  const out={}; Object.values(state.days).forEach(d=>{if(!isEmpty(d)) out[d.date]=d});
+  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); statusIdle(); return true}
+  catch(e){setStatus('error','Phone storage is full. Export a backup, then delete old entries'); return false}
+}
+function changeDay(date,fn,{render:doRender=true,delay=0}={}){
+  const d=structuredClone(getDay(date)); fn(d); d.updated=new Date().toISOString();
+  state.days[date]=d;
+  clearTimeout(timers.all);
+  timers.all=setTimeout(()=>{delete timers.all; writeAll()},delay);
+  if(doRender) render(); else renderHeader();
+}
+function saveHabits(){writeAll()}
+window.addEventListener('pagehide',()=>{if(timers.all){clearTimeout(timers.all); writeAll()}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&timers.all){clearTimeout(timers.all); delete timers.all; writeAll()}});
+
+/* ---------- photos: kept in the phone's own database, never sent anywhere ---------- */
+const MAX_PHOTOS=4;
+let idbP=null, pickTarget=null, viewing=null, pendingBackup=null;
+function idb(){
+  if(!idbP) idbP=new Promise((res,rej)=>{
+    if(!('indexedDB' in window)) return rej(new Error('no storage'));
+    const r=indexedDB.open('daybook',1);
+    r.onupgradeneeded=()=>r.result.createObjectStore('photos',{keyPath:'id'});
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);
+  });
+  return idbP;
+}
+async function idbOp(mode,fn){
+  const db=await idb();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction('photos',mode), st=tx.objectStore('photos'); let out; const r=fn(st);
+    if(r) r.onsuccess=()=>{out=r.result};
+    tx.oncomplete=()=>res(out); tx.onerror=()=>rej(tx.error); tx.onabort=()=>rej(tx.error);
+  });
+}
+const putPhoto=(id,blob)=>idbOp('readwrite',st=>st.put({id,blob,created:Date.now()}));
+const getPhoto=id=>idbOp('readonly',st=>st.get(id)).then(r=>r&&r.blob);
+const delPhoto=id=>{const u=photoURLs.get(id); if(u){URL.revokeObjectURL(u); photoURLs.delete(id)} return idbOp('readwrite',st=>st.delete(id)).catch(()=>{})};
+const photoURLs=new Map();
+async function photoURL(id){
+  if(photoURLs.has(id)) return photoURLs.get(id);
+  const b=await getPhoto(id); if(!b) return null;
+  const u=URL.createObjectURL(b); photoURLs.set(id,u); return u;
+}
+function hydratePhotos(root){
+  root.querySelectorAll('img[data-photo]:not([src])').forEach(async img=>{
+    const u=await photoURL(img.dataset.photo).catch(()=>null);
+    if(u) img.src=u; else {const ph=img.closest('.ph'); if(ph){ph.classList.add('missing'); img.remove()}}
+  });
+}
+/* shrink big camera photos so hundreds fit comfortably on the phone */
+async function shrink(file){
+  let src,w,h,url;
+  try{src=await createImageBitmap(file,{imageOrientation:'from-image'}); w=src.width; h=src.height}
+  catch(e){
+    url=URL.createObjectURL(file);
+    src=await new Promise((res,rej)=>{const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=url});
+    w=src.naturalWidth; h=src.naturalHeight;
+  }
+  const k=Math.min(1,1600/Math.max(w,h)), c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(w*k)); c.height=Math.max(1,Math.round(h*k));
+  c.getContext('2d').drawImage(src,0,0,c.width,c.height);
+  if(url) URL.revokeObjectURL(url); if(src.close) src.close();
+  return new Promise(res=>c.toBlob(b=>res(b||file),'image/jpeg',0.82));
+}
+async function savePhotos(files,room){
+  const ids=[]; let failed=false;
+  for(const f of [...files].slice(0,room)){
+    try{const b=await shrink(f); const id='p'+newId()+newId(); await putPhoto(id,b); ids.push(id)}
+    catch(e){failed=true; if(e&&e.name==='QuotaExceededError'){toast('Phone storage is full. Delete some photos first'); break}}
+  }
+  if(failed&&!ids.length) toast('Couldn’t add that photo. Try another one');
+  else if(files.length>room) toast(`Up to ${MAX_PHOTOS} photos per entry`);
+  return ids;
+}
+function findFood(entryId){for(const d of Object.values(state.days)){const f=d.food.find(x=>x.id===entryId); if(f) return {d,f}} return null}
+async function openViewer(id,entry){
+  const u=await photoURL(id).catch(()=>null); if(!u) return;
+  viewing={id,entry}; const v=$('#viewer'), img=$('#viewerImg'); img.src=u;
+  const where=entry==='new'?null:findFood(entry); img.alt=where?`Photo of ${where.f.what}`:'Photo';
+  const del=v.querySelector('[data-action=rmphoto]'); delete del.dataset.armed; del.textContent='Delete photo';
+  v.hidden=false; v.querySelector('.vclose').focus();
+}
+function closeViewer(){$('#viewer').hidden=true; $('#viewerImg').removeAttribute('src'); viewing=null}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&viewing) closeViewer()});
+const BULLET='• ';
+const cleanBullets=v=>String(v||'').split('\n').map(l=>l.replace(/\s+$/,'')).filter(l=>l&&l.trim()!=='•').join('\n').trim();
+function insertAtCursor(ta,text){
+  const a=ta.selectionStart, b=ta.selectionEnd; ta.value=ta.value.slice(0,a)+text+ta.value.slice(b);
+  const p=a+text.length; ta.setSelectionRange(p,p); autosize(ta); ta.dispatchEvent(new Event('input',{bubbles:true}));
+}
+document.addEventListener('keydown',e=>{
+  const ta=e.target; if(e.key!=='Enter'||e.shiftKey||!ta||!ta.classList||!ta.classList.contains('bullets')) return;
+  e.preventDefault();
+  const before=ta.value.slice(0,ta.selectionStart), line=before.slice(before.lastIndexOf('\n')+1);
+  if(line.trim()==='•'){ /* Enter on an empty bullet ends the list */
+    const start=ta.selectionStart-line.length; ta.value=ta.value.slice(0,start)+ta.value.slice(ta.selectionStart); ta.setSelectionRange(start,start); ta.dispatchEvent(new Event('input',{bubbles:true})); return;
+  }
+  insertAtCursor(ta,'\n'+BULLET);
+});
+document.addEventListener('input',e=>{
+  const ta=e.target; if(!ta.classList||!ta.classList.contains('bullets')) return;
+  const v=ta.value;
+  if(v&&!v.startsWith(BULLET)&&v.trim()!=='•'){ /* first thing typed gets a bullet */
+    const pos=ta.selectionStart; ta.value=BULLET+v.replace(/^•\s?/,''); const p=Math.min(ta.value.length,pos+BULLET.length-(v.startsWith('•')?1:0)); ta.setSelectionRange(p,p);
+  }
+  /* phones that skip the Enter key event: bullet any new line */
+  else if(e.inputType==='insertLineBreak'||e.inputType==='insertParagraph'){
+    const pos=ta.selectionStart; if(ta.value[pos-1]==='\n'&&!ta.value.startsWith(BULLET,pos)) insertAtCursor(ta,BULLET);
+  }
+  autosize(ta);
+});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'||!e.target) return; if(e.target.id==='exName'){e.preventDefault(); addExercise()} else if(e.target.id==='tAct'){e.preventDefault(); addActivity()} else if(e.target.dataset&&e.target.dataset.ex){e.preventDefault()}});
+
+/* ---------- backup ---------- */
+function toast(msg){const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>t.hidden=true,3200)}
+const blobToDataURL=b=>new Promise((res,rej)=>{const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(b)});
+async function buildBackup(){
+  const days={}, ids=new Set();
+  Object.values(state.days).forEach(d=>{if(!isEmpty(d)){days[d.date]=d; d.food.forEach(f=>(f.photos||[]).forEach(id=>ids.add(id)))}});
+  const photos={};
+  for(const id of ids){try{const b=await getPhoto(id); if(b) photos[id]=await blobToDataURL(b)}catch(e){}}
+  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),days,photos};
+  const name=`daybook-backup-${today()}.json`;
+  return new File([JSON.stringify(data)],name,{type:'application/json'});
+}
+function deliverBackup(file){
+  const done=()=>{pendingBackup=null; lsSet('daybook.lastBackup',today()); if(state.tab==='timeline') renderPanel()};
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+    navigator.share({files:[file],title:'Daybook backup'}).then(done).catch(e=>{
+      if(e&&e.name==='NotAllowedError'){pendingBackup=file; if(state.tab==='timeline') renderPanel(); toast('Backup ready. Tap Save backup')}
+    });
+    return;
+  }
+  const url=URL.createObjectURL(file), a=document.createElement('a');
+  a.href=url; a.download=file.name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000); toast('Backup saved'); done();
+}
+async function exportBackup(){
+  if(pendingBackup) return deliverBackup(pendingBackup);
+  toast('Preparing backup…');
+  try{deliverBackup(await buildBackup())}catch(e){toast('Couldn’t make the backup. Try again')}
+}
+function importBackup(file){
+  const r=new FileReader();
+  r.onload=async()=>{
+    try{
+      const data=JSON.parse(r.result);
+      if(data&&data.app==='Daybook'&&data.type==='activities'&&Array.isArray(data.activities)){
+        const res=addActivities(data.activities);
+        toast(res.added?`Added ${res.added} session${res.added===1?'':'s'} from ${data.source||'the file'}`:'Those sessions are already in your log');
+        return;
+      }
+      if(!data||data.app!=='Daybook'||typeof data.days!=='object') throw 0;
+      let n=0, np=0;
+      if(data.photos&&typeof data.photos==='object'){
+        for(const [id,uri] of Object.entries(data.photos)){
+          if(!/^p[a-z0-9]+$/.test(id)||typeof uri!=='string'||!uri.startsWith('data:image/')) continue;
+          try{const have=await getPhoto(id); if(!have){await putPhoto(id,await (await fetch(uri)).blob()); np++}}catch(e){}
+        }
+      }
+      Object.entries(data.days).forEach(([k,v])=>{
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(k)) return;
+        const cur=state.days[k], inc=normalize(k,v);
+        if(!cur||isEmpty(cur)||(inc.updated||'')>(cur.updated||'')){state.days[k]=inc; n++}
+      });
+      let nn=0;
+      if(Array.isArray(data.notes)) data.notes.forEach(x=>{
+        if(!x||typeof x.id!=='string') return; const inc={id:x.id,title:String(x.title||''),body:String(x.body||''),created:x.created||'',updated:x.updated||''};
+        const i=state.notes.findIndex(n=>n.id===inc.id);
+        if(i<0){state.notes.push(inc); nn++} else if((inc.updated||'')>(state.notes[i].updated||'')){state.notes[i]=inc; nn++}
+      });
+      if(Array.isArray(data.habits)){const ids=new Set(state.habits.map(h=>h.id)); data.habits.forEach(h=>{if(h&&h.id&&!ids.has(h.id)) state.habits.push({id:h.id,name:String(h.name||'Habit')})})}
+      writeAll(); render();
+      toast(n||np||nn?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
+    }catch(e){toast('That file isn’t a Daybook backup')}
+  };
+  r.readAsText(file);
+}
+
+/* ---------- Strava: sessions from the nightly file or the Sync button, merged without doubles ---------- */
+const SV_KEY='daybook.strava', REMOVED='daybook.removedIds', SKIPPED='daybook.skippedIds';
+const sv=()=>lsGet(SV_KEY)||{};
+const svSet=o=>lsSet(SV_KEY,Object.assign(sv(),o));
+const idSet=k=>new Set(lsGet(k)||[]);
+function rememberId(k,id){const st=idSet(k); st.add(id); lsSet(k,[...st].slice(-3000))}
+const mins=t=>(t&&/^\d{2}:\d{2}$/.test(t))?(+t.slice(0,2))*60+(+t.slice(3)):null;
+/* the watch sometimes records an indoor ride with no distance while the same ride is also logged with one */
+function sameIndoorRide(zero,full){
+  if(zero.sport!=='Ride'||full.sport!=='Ride'||zero.dist||!full.dist) return false;
+  const a=mins(zero.time), b=mins(full.time); if(a==null||b==null) return false;
+  return Math.abs(a-b)<=30 && Math.abs((zero.dur||0)-(full.dur||0))<=0.25*Math.max(zero.dur||0,1);
+}
+function cleanActivity(x){
+  if(!x||typeof x.id!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)) return null;
+  return {date:x.date,id:x.id.slice(0,60),sport:SPORTS.includes(x.sport)?x.sport:'Other',dist:Math.max(0,+x.dist||0),dur:Math.max(0,Math.round(+x.dur||0)),
+    rpe:(x.rpe>=1&&x.rpe<=10)?Math.round(x.rpe):null,notes:String(x.notes||'').slice(0,600),time:/^\d{2}:\d{2}$/.test(x.time)?x.time:'',source:String(x.source||'').slice(0,30)};
+}
+function addActivities(list){
+  const removed=idSet(REMOVED), skipped=idSet(SKIPPED), have=new Set();
+  Object.values(state.days).forEach(d=>d.training.forEach(t=>have.add(t.id)));
+  const batch=list.map(cleanActivity).filter(x=>x&&!have.has(x.id)&&!removed.has(x.id)&&!skipped.has(x.id));
+  let added=0, merged=0;
+  for(const x of batch){
+    const existing=getDay(x.date).training;
+    if(x.sport==='Ride'&&!x.dist){
+      const twin=batch.some(y=>y!==x&&y.date===x.date&&sameIndoorRide(x,y))||existing.some(y=>sameIndoorRide(x,y));
+      if(twin){rememberId(SKIPPED,x.id); merged++; continue}
+    }
+    const nd=structuredClone(getDay(x.date));
+    if(x.sport==='Ride'&&x.dist){
+      const zero=nd.training.find(y=>y.source&&sameIndoorRide(y,x));
+      if(zero){nd.training=nd.training.filter(y=>y!==zero); rememberId(SKIPPED,zero.id); merged++}
+    }
+    const {date,...entry}=x; nd.training.push(entry);
+    nd.training.sort((p,q)=>(p.time||'99:99').localeCompare(q.time||'99:99'));
+    nd.updated=new Date().toISOString(); state.days[date]=nd; have.add(x.id); added++;
+  }
+  if(added||merged){writeAll(); render()}
+  return {added,merged};
+}
+function stravaSport(name,type,dist){
+  const n=String(name).toLowerCase();
+  if(n.includes('swim')||type==='Swim') return 'Swim';
+  if(!dist&&/strength|weight|gym|legs|core|lift/.test(n)) return 'Strength';
+  if(['Run','TrailRun','VirtualRun'].includes(type)) return 'Run';
+  if(String(type).includes('Ride')) return 'Ride';
+  if(type==='Walk'||type==='Hike') return 'Walk';
+  if(['WeightTraining','Crossfit','Workout','Yoga','Pilates','HighIntensityIntervalTraining'].includes(type)) return 'Strength';
+  return 'Other';
+}
+function fromStrava(a){
+  const sport=stravaSport(a.name||'',a.sport_type||a.type||'',a.distance||0), d=a.distance||0;
+  const dist=sport==='Swim'?Math.round(d):(sport==='Strength'||sport==='Other')?0:Math.round(d/10)/100;
+  const bits=[String(a.name||'').trim()].filter(Boolean);
+  if(a.description) bits.push(...String(a.description).split('\n').map(l=>l.trim()).filter(Boolean));
+  if(a.suffer_score) bits.push('Relative effort '+Math.round(a.suffer_score));
+  const st=String(a.start_date_local||'');
+  return {id:'strava-'+a.id,date:st.slice(0,10),time:st.slice(11,16),sport,dist,dur:Math.round(a.moving_time||0),rpe:null,notes:bits.join(' · '),source:'Strava'};
+}
+const STRAVA='https://www.strava.com';
+const redirectURI=()=>location.origin+location.pathname;
+let syncing=false;
+function stravaConnect(){
+  const s=sv(); if(!s.clientId||!s.secret){toast('Enter your Client ID and Client Secret first'); return}
+  location.href=`${STRAVA}/oauth/mobile/authorize?client_id=${encodeURIComponent(s.clientId)}&redirect_uri=${encodeURIComponent(redirectURI())}&response_type=code&approval_prompt=auto&scope=read,activity:read_all&state=daybook`;
+}
+async function tokenCall(body){
+  let r; try{r=await fetch(STRAVA+'/oauth/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})}
+  catch(e){throw Object.assign(new Error('offline'),{code:'net'})}
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok) throw Object.assign(new Error(j.message||'refused'),{code:r.status===429?'rate':'auth'});
+  return j;
+}
+async function exchangeCode(code){
+  const s=sv();
+  const j=await tokenCall({client_id:s.clientId,client_secret:s.secret,code:code.trim(),grant_type:'authorization_code'});
+  svSet({access:j.access_token,refresh:j.refresh_token,expires:j.expires_at,name:(j.athlete&&j.athlete.firstname)||''});
+}
+async function accessToken(){
+  const s=sv(); if(!s.refresh) throw Object.assign(new Error('not connected'),{code:'auth'});
+  if(s.access&&s.expires*1000>Date.now()+120000) return s.access;
+  const j=await tokenCall({client_id:s.clientId,client_secret:s.secret,grant_type:'refresh_token',refresh_token:s.refresh});
+  svSet({access:j.access_token,refresh:j.refresh_token,expires:j.expires_at}); return j.access_token;
+}
+async function api(path,token){
+  let r; try{r=await fetch(STRAVA+'/api/v3'+path,{headers:{Authorization:'Bearer '+token}})}
+  catch(e){throw Object.assign(new Error('offline'),{code:'net'})}
+  if(r.status===401) throw Object.assign(new Error('expired'),{code:'auth'});
+  if(r.status===429) throw Object.assign(new Error('busy'),{code:'rate'});
+  if(!r.ok) throw Object.assign(new Error('strava '+r.status),{code:'other'});
+  return r.json();
+}
+function stravaError(e){
+  const c=e&&e.code;
+  if(c==='net') toast('Couldn’t reach Strava. Check your signal and try again');
+  else if(c==='rate') toast('Strava is busy. Try again in 15 minutes');
+  else if(c==='auth'){svSet({access:null,refresh:null}); toast('Strava needs you to connect again'); if(state.tab==='training') renderPanel()}
+  else toast('Strava sync didn’t work. Try again later');
+}
+async function stravaSync(){
+  if(syncing) return;
+  if(navigator.onLine===false){toast('No signal. Try again when you’re online'); return}
+  syncing=true; if(state.tab==='training') renderPanel();
+  try{
+    const token=await accessToken(), s=sv();
+    const since=Math.floor((s.lastSync?s.lastSync-3*864e5:Date.now()-30*864e5)/1000);
+    const all=[];
+    for(let page=1;page<=5;page++){
+      const got=await api(`/athlete/activities?after=${since}&per_page=100&page=${page}`,token);
+      if(!Array.isArray(got)) break; all.push(...got); if(got.length<100) break;
+    }
+    const removed=idSet(REMOVED), skipped=idSet(SKIPPED), have=new Set();
+    Object.values(state.days).forEach(d=>d.training.forEach(t=>have.add(t.id)));
+    const fresh=all.filter(a=>{const id='strava-'+a.id; return !have.has(id)&&!removed.has(id)&&!skipped.has(id)});
+    for(const a of fresh.slice(0,25)){try{const full=await api('/activities/'+a.id,token); a.description=full.description||''}catch(e){if(e.code==='rate') break}}
+    const res=addActivities(all.map(fromStrava));
+    svSet({lastSync:Date.now()});
+    toast(res.added?`Added ${res.added} session${res.added===1?'':'s'} from Strava`:'Up to date. Nothing new on Strava');
+  }catch(e){stravaError(e)}
+  finally{syncing=false; if(state.tab==='training') renderPanel()}
+}
+function stravaReturn(){
+  const q=new URLSearchParams(location.search); if(q.get('state')!=='daybook') return;
+  history.replaceState(null,'',location.pathname);
+  if(q.get('error')){toast('Strava connection cancelled'); return}
+  const code=q.get('code'); if(!code) return;
+  state.tab='training'; lsSet('daybook.tab','training');
+  const s=sv();
+  if(s.clientId&&s.secret){
+    exchangeCode(code).then(()=>{toast('Strava connected'); render(); stravaSync()}).catch(e=>{state.handoff=code; render(); stravaError(e)});
+  } else {state.handoff=code; render()}
+}
+function agoText(ms){
+  const m=Math.round((Date.now()-ms)/60000);
+  if(m<1) return 'just now'; if(m<60) return m+' min ago';
+  const h=Math.round(m/60); if(h<24) return h+' h ago';
+  const d=Math.round(h/24); return d+' day'+(d===1?'':'s')+' ago';
+}
+function stravaCard(){
+  const s=sv(), u=state.ui;
+  if(state.handoff&&!(s.clientId&&s.secret)) return `<section class="card sv">
+    <p class="label">Strava: one more step</p>
+    <p class="hint">Strava sent you back to Safari instead of the Daybook app. Copy this code, open Daybook from your home screen, go to Activity, tap Connect Strava and paste it under step 3.</p>
+    <input id="svHandoff" readonly value="${esc(state.handoff)}">
+    <div class="actions"><button class="btn" data-action="copycode">Copy code</button></div></section>`;
+  if(s.refresh) return `<section class="card sv">
+    <div class="sechead"><p class="label">Strava${s.name?' · '+esc(s.name):''}</p><span class="hint">${s.lastSync?'Synced '+agoText(s.lastSync):'Not synced yet'}</span></div>
+    <p class="hint">Backup for the nightly file. Sessions already in Daybook are skipped, so nothing doubles up. Needs signal.</p>
+    <div class="actions"><button class="btn" data-action="svsync" ${syncing?'disabled':''}>${syncing?'Syncing…':'Sync from Strava'}</button>
+    <button class="del" data-action="svoff">Disconnect</button></div></section>`;
+  if(!u.svSetup) return `<button class="btn ghost" data-action="toggle" data-k="svSetup">Connect Strava</button>`;
+  return `<form class="card sv" id="svForm">
+    <p class="label">Connect Strava</p>
+    <p class="hint">1. On strava.com/settings/api, create an app with Authorization Callback Domain <b>${esc(location.host||'your site')}</b>.</p>
+    <div class="row"><div class="field"><label class="label" for="svId">Client ID</label><input id="svId" inputmode="numeric" autocomplete="off" value="${esc(s.clientId||'')}"></div>
+    <div class="field"><label class="label" for="svSecret">Client Secret</label><input id="svSecret" type="password" autocomplete="off" value="${esc(s.secret||'')}"></div></div>
+    <p class="hint">2. Tap Connect and approve on Strava. Your key stays on this phone.</p>
+    <div class="actions"><button type="button" class="btn plain" data-action="toggle" data-k="svSetup">Cancel</button><button class="btn" type="submit">Connect</button></div>
+    <p class="hint">3. Only if Strava left you in Safari: paste the code it showed you here.</p>
+    <div class="row" style="grid-template-columns:1fr auto"><input id="svCode" autocomplete="off" placeholder="Code from Strava"><button type="button" class="btn plain" data-action="svcode">Use code</button></div>
+  </form>`;
+}
+
+/* ---------- render ---------- */
+let panelStale=false;
+function render(){
+  document.documentElement.style.setProperty('--c',`var(${TAB_COLOR[state.tab]})`);
+  renderHeader(); renderPanel(); renderTabs();
+}
+function renderTabs(){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===state.tab));
+}
+function renderHeader(){
+  const t=today();
+  $('#dayTitle').innerHTML=`<small>${esc(relLabel(state.date))}</small>${esc(longDate(state.date))}`;
+  $('#todayBtn').hidden = state.date===t;
+  const mon=monday(state.date); let h='';
+  for(let i=0;i<7;i++){
+    const ds=addDays(mon,i), d=getDay(ds), dt=parseIso(ds);
+    const has=[!!(d.mood||d.highlight||d.notes||d.learned||d.learnedNotes),d.training.length>0,d.food.length>0,Object.values(d.habits).some(Boolean)];
+    h+=`<button class="wd${ds===t?' today':''}${ds>t?' future':''}" data-action="go" data-date="${ds}" ${ds===state.date?'aria-current="date"':''} aria-label="${esc(longDate(ds))}">
+      <span>${dt.toLocaleDateString('en-GB',{weekday:'narrow'})}</span><b>${dt.getDate()}</b>
+      <div class="dots"><i class="j ${has[0]?'on':''}"></i><i class="t ${has[1]?'on':''}"></i><i class="f ${has[2]?'on':''}"></i><i class="h ${has[3]?'on':''}"></i></div></button>`;
+  }
+  $('#week').innerHTML=h;
+}
+function renderPanel(){
+  const p=$('#panel'); const d=getDay(state.date);
+  const fn={journal:journalPanel,training:trainingPanel,food:foodPanel,habits:habitsPanel,notes:notesPanel,timeline:timelinePanel,settings:settingsPanel}[state.tab]||journalPanel;
+  p.innerHTML=fn(d); panelStale=false; hydratePhotos(p);
+  p.querySelectorAll('textarea').forEach(autosize);
+}
+function autosize(ta){ta.style.height='auto'; ta.style.height=Math.max(ta.classList.contains('notebody')?260:ta.classList.contains('bullets')?96:140,ta.scrollHeight+2)+'px'}
+
+function journalPanel(d){
+  const tSec=d.training.reduce((a,t)=>a+(t.dur||0),0);
+  const done=state.habits.filter(h=>d.habits[h.id]).length;
+  return `
+  <div class="sechead"><h2>Journal</h2></div>
+  <section class="card">
+    <p class="label" id="moodLbl">How was the day?</p>
+    <div class="mood" role="radiogroup" aria-labelledby="moodLbl">${MOODS.map((m,i)=>
+      `<button class="moodbtn" role="radio" aria-checked="${d.mood===i+1}" data-action="mood" data-v="${i+1}"><b>${i+1}</b>${m}</button>`).join('')}</div>
+  </section>
+  <section class="card">
+    <label class="label" for="hl">Best part of the day</label>
+    <input id="hl" data-field="highlight" value="${esc(d.highlight)}" placeholder="One good thing…" maxlength="200" autocomplete="off">
+    <label class="label" for="notes">Notes</label>
+    <textarea id="notes" data-field="notes" placeholder="What happened, what’s on your mind, what you’d do differently…">${esc(d.notes)}</textarea>
+    <p class="hint">Saves as you type.</p>
+  </section>
+  <section class="card">
+    <label class="label" for="learned">Something new I learned</label>
+    <input id="learned" data-field="learned" value="${esc(d.learned)}" placeholder="A technique, a fact, a mistake worth remembering" maxlength="200" autocomplete="off">
+    <label class="label" for="learnedNotes">Details</label>
+    <textarea id="learnedNotes" data-field="learnedNotes" placeholder="How it works, where you picked it up, how you\u2019ll use it\u2026">${esc(d.learnedNotes)}</textarea>
+  </section>
+  <div class="chips">
+    <button class="chip" style="--cc:var(--train)" data-action="tab" data-tab="training"><span>Activity</span><b>${d.training.length?fmtHM(tSec):'—'}</b></button>
+    <button class="chip" style="--cc:var(--food)" data-action="tab" data-tab="food"><span>Food</span><b>${d.food.length?d.food.length+' logged':'—'}</b></button>
+    <button class="chip" style="--cc:var(--habit)" data-action="tab" data-tab="habits"><span>Habits</span><b>${done}/${state.habits.length}</b></button>
+  </div>`;
+}
+
+function trainingPanel(d){
+  const u=state.ui, mon=monday(state.date);
+  const totals={}; let tot={n:0,dur:0}; const perDay=[];
+  for(let i=0;i<7;i++){const dd=getDay(addDays(mon,i)); let s=0;
+    dd.training.forEach(t=>{const k=t.sport; totals[k]=totals[k]||{n:0,dist:0,dur:0}; totals[k].n++; totals[k].dist+=+t.dist||0; totals[k].dur+=t.dur||0; tot.n++; tot.dur+=t.dur||0; s+=t.dur||0});
+    perDay.push(s)}
+  const max=Math.max(...perDay,1);
+  const rows=[...SPORTS.filter(s=>totals[s]),...Object.keys(totals).filter(s=>!SPORTS.includes(s))].map(s=>{const t=totals[s];
+    return `<div class="wrow"><span>${esc(s)}</span><span>${t.n}×</span><span>${NO_DIST.includes(s)||!t.dist?'\u2014':fmtDist(s,t.dist)+' '+distUnit(s)}</span><span>${fmtHM(t.dur)}</span></div>`}).join('');
+  const week=`<section class="card">
+    <div class="sechead"><p class="label">Week of ${esc(parseIso(mon).toLocaleDateString('en-GB',{day:'numeric',month:'short'}))}</p><span class="hint">${tot.n} session${tot.n===1?'':'s'} · ${fmtHM(tot.dur)}</span></div>
+    <div class="bars" aria-hidden="true">${perDay.map((s,i)=>`<div><i class="${s?'':'zero'}" style="height:${s?Math.max(8,Math.round(s/max*48)):2}px"></i><span>${parseIso(addDays(mon,i)).toLocaleDateString('en-GB',{weekday:'narrow'})}</span></div>`).join('')}</div>
+    ${rows?`<div class="weektable">${rows}</div>`:'<p class="hint">No sessions logged this week yet.</p>'}
+  </section>`;
+  const list=d.training.length?`<div class="list">${d.training.map(t=>`
+    <div class="item"><span class="badge">${esc(t.sport)}</span><div>
+      <div class="stats">${!NO_DIST.includes(t.sport)&&t.dist?`<span>${fmtDist(t.sport,t.dist)}<small>${distUnit(t.sport)}</small></span>`:''}
+        ${t.dur?`<span>${fmtDur(t.dur)}</span>`:''}${pace(t)?`<span>${pace(t)}</span>`:''}${t.rpe?`<span>RPE ${t.rpe}<small>/10</small></span>`:''}</div>
+      ${exList(t)}${t.notes?`<p>${esc(t.notes)}</p>`:''}${t.source||t.time?`<p class="src">${esc([t.time,t.source?'from '+t.source:''].filter(Boolean).join(' \u00b7 '))}</p>`:''}</div>
+      <div class="itbtns"><button class="del" data-action="edittrain" data-id="${t.id}">Edit</button><button class="del" data-action="del" data-list="training" data-id="${t.id}">Delete</button></div></div>`).join('')}</div>`
+    :`<div class="empty"><b>No activity on this day</b>Log a walk, a run, the gym, a game of football, anything that got you moving, and it’ll count toward your week.</div>`;
+  const form=u.addTrain?`<form class="card" id="trainForm">
+    <p class="label">${u.editTrain?'Edit activity':'New activity'}</p>
+    <div class="seg" role="group" aria-label="Activity">${actOptions(u.sport).map(s=>{const mine=!SPORTS.includes(s)&&savedActs().includes(s); return u.editActs&&mine?`<button type="button" class="actrm" data-action="actrm" data-v="${esc(s)}" aria-label="Remove ${esc(s)}">× ${esc(s)}</button>`:`<button type="button" data-action="sport" data-v="${esc(s)}" aria-pressed="${u.sport===s}">${esc(s)}</button>`}).join('')}</div>
+    <div class="row" style="grid-template-columns:1fr auto"><input id="tAct" maxlength="30" enterkeyhint="done" autocomplete="off" aria-label="Type an activity" placeholder="Type your own, e.g. Yoga, Football"><button type="button" class="btn plain" data-action="actadd">Add</button></div>
+    ${savedActs().length?`<p class="hint">Activities you add are saved for next time. <button type="button" class="del" data-action="actedit">${u.editActs?'Done':'Edit list'}</button></p>`:''}
+    <div class="row">
+      <div class="field" ${NO_DIST.includes(u.sport)?'hidden':''}><label class="label" for="tDist">Distance (${distUnit(u.sport)})</label><input id="tDist" type="number" inputmode="decimal" step="any" min="0" placeholder="${u.sport==='Swim'?'1500':'10.0'}"></div>
+      <div class="field"><label class="label" for="tDur">Time</label><input id="tDur" inputmode="numeric" placeholder="h:mm:ss or minutes" autocomplete="off"></div>
+    </div>
+    ${u.sport==='Strength'?exerciseBuilder():`<div class="field"><label class="label" for="tRpe">Effort: <span id="rpeV">${u.rpe}</span>/10</label><input id="tRpe" type="range" min="1" max="10" value="${u.rpe}"></div>`}
+    <div class="field"><label class="label" for="tNotes">Notes</label><textarea id="tNotes" class="bullets" placeholder="${u.sport==='Strength'?'• How it felt, what to change next time':'• Route, splits, how the legs felt'}"></textarea></div>
+    <div class="actions"><button type="button" class="btn plain" data-action="toggle" data-k="addTrain">Cancel</button><button class="btn" type="submit">${u.editTrain?'Save changes':'Save activity'}</button></div>
+  </form>`:`<button class="btn ghost" data-action="toggle" data-k="addTrain">Log an activity</button>`;
+  return `<div class="sechead"><h2>Activity</h2></div>${form}${list}${week}${stravaCard()}`;
+}
+
+const SET_FIELDS=[['reps','numeric','8'],['weight','decimal','kg'],['rpe','decimal','1–10']];
+const blankSet=()=>({reps:'',weight:'',rpe:''});
+/* older entries stored one sets/reps/weight/rpe per exercise: turn them into a list of sets */
+function normSets(x){
+  if(Array.isArray(x.sets)) return x.sets;
+  const n=Math.max(1,Math.min(20,+x.sets||1));
+  return Array.from({length:n},()=>({reps:x.reps||0,weight:x.weight==null?null:x.weight,rpe:x.rpe==null?null:x.rpe}));
+}
+function exerciseBuilder(){
+  const ex=state.ui.exercises;
+  return `<div class="field"><span class="label">Exercises</span>
+    ${ex.map((x,i)=>`<div class="ex"><header><h4>${i+1}. ${esc(x.name)}</h4><button type="button" class="del" data-action="exrm" data-id="${x.id}">Remove</button></header>
+      <label class="excount"><span class="label">Sets</span><input type="number" inputmode="numeric" min="1" max="20" step="1" id="ex-${x.id}-n" data-ex="${x.id}" data-k="n" value="${esc(x.count)}" placeholder="${x.sets.length}"></label>
+      <div class="exgrid"><span></span><span class="h">Reps</span><span class="h">Weight</span><span class="h">RPE</span>
+      ${x.sets.map((st,j)=>`<span class="sn">Set ${j+1}</span>${SET_FIELDS.map(([k,m,ph])=>`<input type="number" inputmode="${m}" step="${m==='numeric'?1:'any'}" min="0"${k==='rpe'?' max="10"':''} id="ex-${x.id}-${j}-${k}" data-ex="${x.id}" data-set="${j}" data-k="${k}" value="${esc(st[k])}" placeholder="${ph}" aria-label="Set ${j+1} ${k}">`).join('')}`).join('')}</div></div>`).join('')}
+    <div class="row" style="grid-template-columns:1fr auto"><input id="exName" list="exNames" maxlength="60" enterkeyhint="done" autocomplete="off" placeholder="${ex.length?'Add another exercise':'Exercise, e.g. Back squat'}"><button type="button" class="btn plain" data-action="exadd">Add</button></div>
+    <datalist id="exNames">${pastExercises().map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+    ${ex.length?'':'<p class="hint">Type an exercise and tap Add. Enter how many sets you did and a row appears for each, so every set can have its own reps, weight and RPE.</p>'}</div>`;
+}
+function pastExercises(){
+  const seen=new Map();
+  Object.values(state.days).forEach(d=>d.training.forEach(t=>(t.exercises||[]).forEach(x=>{const n=String(x.name||'').trim(), k=n.toLowerCase(); if(n&&!seen.has(k)) seen.set(k,n)})));
+  return [...seen.values()].sort((a,b)=>a.localeCompare(b));
+}
+function addActivity(){
+  const inp=$('#tAct'); let name=(inp&&inp.value||'').trim().replace(/\s+/g,' ').slice(0,30); if(!name){if(inp) inp.focus(); return}
+  name=name.charAt(0).toUpperCase()+name.slice(1);
+  const match=actOptions().find(x=>x.toLowerCase()===name.toLowerCase());
+  if(match) name=match; else lsSet(ACT_KEY,[...savedActs(),name]);
+  state.ui.sport=name; const keep=keepForm('trainForm'); renderPanel(); keep();
+  const n=$('#tAct'); if(n) n.value=''; const f=$('#tDist')||$('#tDur'); if(f) f.focus({preventScroll:true});
+  toast(match?name+' selected':name+' saved for next time');
+}
+function addExercise(){
+  const inp=$('#exName'), name=(inp&&inp.value||'').trim(); if(!name){if(inp) inp.focus(); return}
+  const x={id:newId(),name,count:'',sets:[blankSet()]}; state.ui.exercises.push(x);
+  const keep=keepForm('trainForm'); renderPanel(); keep();
+  const n=$('#exName'); if(n) n.value=''; const c=$(`#ex-${x.id}-n`); (c||n).focus({preventScroll:true});
+}
+function setBits(st){
+  const b=[], hasW=st.weight!=null&&st.weight!=='', w=hasW?(+st.weight?`${st.weight} kg`:'bodyweight'):'';
+  if(st.reps&&hasW) b.push(`${st.reps} × ${w}`); else if(st.reps) b.push(`${st.reps} reps`); else if(hasW) b.push(w);
+  if(st.rpe) b.push(`RPE ${st.rpe}`); return b;
+}
+function exLines(x){
+  const ss=normSets(x); if(!ss.length) return [];
+  const same=ss.every(q=>q.reps===ss[0].reps&&q.weight===ss[0].weight&&q.rpe===ss[0].rpe);
+  if(same){
+    const f=ss[0], b=[];
+    if(f.reps) b.push(`${ss.length} × ${f.reps}`); else b.push(`${ss.length} set${ss.length===1?'':'s'}`);
+    if(f.weight!=null&&f.weight!=='') b.push(+f.weight?`${f.weight} kg`:'Bodyweight');
+    if(f.rpe) b.push(`RPE ${f.rpe}`);
+    return [b.join(' · ')];
+  }
+  return ss.map((st,j)=>({n:j+1,t:setBits(st).join(' · ')||'—'}));
+}
+const exList=t=>(t.exercises&&t.exercises.length)?`<ul class="exlist">${t.exercises.map(x=>{const ls=exLines(x);
+  return `<li><b>${esc(x.name)}</b>${ls.map(l=>typeof l==='string'?`<span>${esc(l)}</span>`:`<span class="set"><i>${l.n}</i>${esc(l.t)}</span>`).join('')}</li>`}).join('')}</ul>`:'';
+
+const noteIsEmpty=n=>!String(n.title||'').trim()&&!cleanBullets(n.body);
+const noteFirstLine=b=>(String(b||'').split('\n').find(l=>l.replace(/^•\s*/,'').trim())||'').replace(/^•\s*/,'');
+function notesPanel(){
+  const u=state.ui, n=u.noteOpen&&state.notes.find(x=>x.id===u.noteOpen);
+  if(n) return `<div class="sechead"><h2>Notes</h2></div>
+  <section class="card">
+    <div class="notehead"><button class="btn plain" data-action="closenote">Done</button><button class="del" data-action="delnote" data-id="${n.id}">Delete note</button></div>
+    <input id="noteTitle" data-note="title" value="${esc(n.title)}" placeholder="Title" maxlength="120" autocomplete="off">
+    <textarea id="noteBody" class="bullets notebody" data-note="body" placeholder="• Start typing. Each new line gets a bullet">${esc(n.body)}</textarea>
+    <p class="hint">Saves as you type. Enter on an empty bullet ends the list.</p>
+  </section>`;
+  const list=state.notes.filter(x=>!noteIsEmpty(x)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));
+  return `<div class="sechead"><h2>Notes</h2><span class="hint">${list.length?list.length+' note'+(list.length===1?'':'s'):''}</span></div>
+  <button class="btn ghost" data-action="newnote">New note</button>
+  ${list.length?`<div class="tl">${list.map(x=>{const when=x.updated?shortDate(iso(new Date(x.updated))):'';
+    const prev=String(x.body||'').split('\n').map(l=>l.trim()).filter(l=>l&&l!=='•').join('  ');
+    return `<button class="tlday" data-action="opennote" data-id="${x.id}"><header><h3>${esc(x.title||noteFirstLine(x.body)||'Untitled')}</h3><span class="m">${esc(when)}</span></header>${prev?`<p>${esc(prev)}</p>`:''}</button>`}).join('')}</div>`
+  :`<div class="empty"><b>No notes yet</b>Ideas, plans, lists, anything that isn’t tied to one day. Each line gets a bullet as you type.</div>`}`;
+}
+function closeNote(){
+  const u=state.ui; state.notes=state.notes.filter(n=>!noteIsEmpty(n)); u.noteOpen=null; writeAll(); renderPanel(); window.scrollTo(0,0);
+}
+
+function foodPanel(d){
+  const u=state.ui;
+  const order=k=>FOOD_KINDS.indexOf(k);
+  const items=[...d.food].sort((a,b)=>order(a.kind)-order(b.kind));
+  const list=items.length?`<div class="list">${items.map(f=>`
+    <div class="item"><span class="badge">${esc(f.kind)}</span><div>
+      <h3>${esc(f.what)}</h3>${f.rating?`<div class="stars" aria-label="${f.rating} out of 5">${'★'.repeat(f.rating)}${'☆'.repeat(5-f.rating)}</div>`:''}
+      ${f.notes?`<p>${esc(f.notes)}</p>`:''}
+      <div class="phs">${(f.photos||[]).map(id=>`<button class="ph" data-action="viewphoto" data-id="${id}" data-entry="${f.id}" aria-label="Open photo"><img data-photo="${id}" alt="Photo of ${esc(f.what)}"></button>`).join('')}
+        ${(f.photos||[]).length<MAX_PHOTOS?`<button class="phadd" data-action="addphoto" data-id="${f.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo</button>`:''}</div></div>
+      <button class="del" data-action="del" data-list="food" data-id="${f.id}">Delete</button></div>`).join('')}</div>`
+    :`<div class="empty"><b>Nothing logged for this day</b>Add meals, snacks, or a dish you tested, with photos, a rating and notes for next time.</div>`;
+  const form=u.addFood?`<form class="card" id="foodForm">
+    <p class="label">New entry</p>
+    <div class="seg" role="group" aria-label="Type">${FOOD_KINDS.map(k=>`<button type="button" data-action="kind" data-v="${k}" aria-pressed="${u.kind===k}">${k}</button>`).join('')}</div>
+    <div class="field"><label class="label" for="fWhat">What</label><input id="fWhat" required placeholder="${u.kind==='Recipe test'?'Brown butter gnocchi, sage':'What you ate'}" autocomplete="off"></div>
+    <div class="field"><label class="label" for="fNotes">Notes</label><input id="fNotes" placeholder="${u.kind==='Recipe test'?'What worked, what to change':'Where, with who, how it was'}" autocomplete="off"></div>
+    <div class="field"><span class="label">Photos (optional)</span><div class="phs" style="margin-top:0">${u.pendingPhotos.map(id=>`<button type="button" class="ph" data-action="viewphoto" data-id="${id}" data-entry="new" aria-label="Open photo"><img data-photo="${id}" alt="New photo"></button>`).join('')}
+      ${u.pendingPhotos.length<MAX_PHOTOS?`<button type="button" class="phadd" data-action="addphoto" data-id="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Add photo</button>`:''}</div></div>
+    <div class="field"><span class="label">Rating (optional)</span><div class="rate">${[1,2,3,4,5].map(n=>`<button type="button" class="${u.rating>=n?'on':''}" data-action="rate" data-v="${n}" aria-label="${n} star${n>1?'s':''}">★</button>`).join('')}</div></div>
+    <div class="actions"><button type="button" class="btn plain" data-action="toggle" data-k="addFood">Cancel</button><button class="btn" type="submit">Save</button></div>
+  </form>`:`<button class="btn ghost" data-action="toggle" data-k="addFood">Add food</button>`;
+  return `<div class="sechead"><h2>Food</h2></div>${form}${list}`;
+}
+
+function habitStreak(id,date){
+  const done=ds=>!!getDay(ds).habits[id];
+  let n=0, ds=date; if(!done(ds)) ds=addDays(ds,-1);
+  while(done(ds)&&n<3650){n++; ds=addDays(ds,-1)} return n;
+}
+function habitsPanel(d){
+  const u=state.ui, hs=state.habits;
+  const done=hs.filter(h=>d.habits[h.id]).length, pct=hs.length?Math.round(done/hs.length*100):0;
+  const rows=hs.map(h=>{const st=habitStreak(h.id,state.date);
+    const seven=[...Array(7)].map((_,i)=>{const ds=addDays(state.date,i-6);return `<i class="${getDay(ds).habits[h.id]?'on':''}"></i>`}).join('');
+    return `<div class="habit">
+      <button class="check" role="checkbox" aria-checked="${!!d.habits[h.id]}" aria-label="${esc(h.name)}" data-action="habit" data-id="${h.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>
+      <div><h3>${esc(h.name)}</h3><div class="seven" title="Last 7 days">${seven}</div></div>
+      ${u.editHabits?`<button class="del" data-action="delhabit" data-id="${h.id}">Remove</button>`:`<span class="streak">${st?st+'-day streak':''}</span>`}</div>`}).join('');
+  return `<div class="sechead"><h2>Habits</h2><button class="del" data-action="toggle" data-k="editHabits">${u.editHabits?'Done':'Edit'}</button></div>
+  <section class="card"><div class="sechead"><span class="big">${done}<span class="hint"> of ${hs.length}</span></span><span class="hint">${pct}% done</span></div>
+    <div class="progress"><i style="width:${pct}%"></i></div></section>
+  ${hs.length?`<div class="list">${rows}</div>`:`<div class="empty"><b>No habits yet</b>Tap Edit to add the daily things you want to keep up.</div>`}
+  ${u.editHabits?`<form class="card" id="habitForm"><label class="label" for="hName">Add a habit</label>
+    <div class="row" style="grid-template-columns:1fr auto"><input id="hName" maxlength="60" placeholder="e.g. No phone after 11pm" autocomplete="off"><button class="btn" type="submit">Add</button></div></form>`:''}`;
+}
+
+function daySummaryText(d){return [d.highlight,d.notes,d.learned,d.learnedNotes,...d.training.map(t=>t.sport+' '+(t.notes||'')+' '+(t.exercises||[]).map(x=>x.name).join(' ')),...d.food.map(f=>f.kind+' '+f.what+' '+(f.notes||''))].join(' ').toLowerCase()}
+function timelinePanel(){
+  const u=state.ui, q=u.search.trim().toLowerCase();
+  let days=Object.values(state.days).filter(d=>!isEmpty(d)).sort((a,b)=>b.date.localeCompare(a.date));
+  if(q) days=days.filter(d=>daySummaryText(d).includes(q));
+  const shown=days.slice(0,u.tlLimit);
+  const cards=shown.map(d=>{
+    const tags=[];
+    d.training.forEach(t=>tags.push(`<span class="tag t">${esc(t.sport)}${!NO_DIST.includes(t.sport)&&t.dist?' '+fmtDist(t.sport,t.dist)+' '+distUnit(t.sport):t.dur?' '+fmtHM(t.dur):''}${t.exercises&&t.exercises.length?' \u00b7 '+t.exercises.length+' exercise'+(t.exercises.length===1?'':'s'):''}</span>`));
+    const dayPhotos=d.food.flatMap(f=>f.photos||[]);
+    if(d.food.length) tags.push(`<span class="tag f">${d.food.length} food${dayPhotos.length?` \u00b7 ${dayPhotos.length} photo${dayPhotos.length===1?'':'s'}`:''}</span>`);
+    const hd=state.habits.filter(h=>d.habits[h.id]).length; if(hd) tags.push(`<span class="tag h">Habits ${hd}/${state.habits.length}</span>`);
+    const text=d.highlight||d.notes;
+    return `<button class="tlday" data-action="open" data-date="${d.date}"><header><h3>${esc(shortDate(d.date))}</h3>${d.mood?`<span class="m">${d.mood}/5 ${MOODS[d.mood-1]}</span>`:''}</header>
+      ${text?`<p>${esc(text)}</p>`:''}${d.learned?`<p class="learn"><b>Learned:</b> ${esc(d.learned)}</p>`:''}${dayPhotos.length?`<span class="tlph">${dayPhotos.slice(0,4).map(id=>`<span class="ph"><img data-photo="${id}" alt=""></span>`).join('')}</span>`:''}${tags.length?`<div class="tags">${tags.join('')}</div>`:''}</button>`}).join('');
+  return `<div class="sechead"><h2>Timeline</h2><span class="hint">${days.length} day${days.length===1?'':'s'}</span></div>
+  <input id="tlSearch" type="search" placeholder="Search notes, meals, sessions" value="${esc(u.search)}" autocomplete="off" style="width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px">
+  ${shown.length?`<div class="tl">${cards}</div>`:`<div class="empty"><b>${q?'No matches':'Your days will show up here'}</b>${q?'Try a different word.':'Anything you log on the other tabs lands here, newest first. Tap a day to open it.'}</div>`}
+  ${days.length>shown.length?`<button class="btn plain" data-action="more">Show older days</button>`:''}
+  ${backupCard(days.length)}`;
+}
+function currentTheme(){const t=lsGet('daybook.theme'); return t==='light'||t==='system'?t:'dark'}
+function applyTheme(t){
+  const r=document.documentElement;
+  if(t==='system') r.removeAttribute('data-theme'); else r.setAttribute('data-theme',t);
+  const m=$('#themeColor'); if(m) m.content=getComputedStyle(r).getPropertyValue('--bg').trim()||'#2A2C30';
+}
+function textHue(){const h=lsGet('daybook.textHue'); return typeof h==='number'?h:null}
+function isDarkNow(){const a=document.documentElement.getAttribute('data-theme'); return a?a==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
+const inkFor=(h,dark)=>dark?`hsl(${h} 75% 80%)`:`hsl(${h} 70% 25%)`;
+function applyTextColour(h=textHue()){
+  const r=document.documentElement.style, dark=isDarkNow();
+  if(h==null){r.removeProperty('--ink'); r.removeProperty('--muted'); return}
+  r.setProperty('--ink',inkFor(h,dark)); r.setProperty('--muted',dark?`hsl(${h} 30% 70%)`:`hsl(${h} 25% 38%)`);
+}
+function hueName(h){
+  const n=[[15,'Red'],[40,'Orange'],[65,'Yellow'],[100,'Lime'],[160,'Green'],[185,'Teal'],[210,'Sky blue'],[250,'Blue'],[280,'Purple'],[320,'Pink'],[345,'Rose'],[361,'Red']];
+  return n.find(([max])=>h<max)[1];
+}
+function settingsPanel(){
+  return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}`;
+}
+function appearanceCard(){
+  const t=currentTheme(), opt=[['light','Light'],['dark','Dark'],['system','Match phone']];
+  return `<section class="card" style="--c:var(--ink)">
+    <p class="label">Appearance</p>
+    <div class="seg" role="group" aria-label="Appearance">${opt.map(([v,l])=>`<button type="button" data-action="theme" data-v="${v}" aria-pressed="${t===v}">${l}</button>`).join('')}</div>
+    <p class="hint">${t==='system'?'Follows your iPhone\u2019s light or dark setting.':t==='dark'?'Dark grey, whatever your iPhone is set to.':'Light, whatever your iPhone is set to.'}</p>
+    <div class="swatchrow"><label class="label" for="textHue">Text colour</label>
+      <span class="swatch" id="hueName">${textHue()==null?'Default':hueName(textHue())}</span></div>
+    <input type="range" id="textHue" class="hue${textHue()==null?' off':''}" min="0" max="360" step="1" value="${textHue()??210}" aria-label="Text colour"
+      style="--tc:${textHue()==null?'var(--surface)':inkFor(textHue(),isDarkNow())}">
+    <div class="actions" style="justify-content:space-between"><span class="hint">Drag along the rainbow. Shades adjust so text stays easy to read.</span>
+      <button type="button" class="btn plain" data-action="texthue-reset" ${textHue()==null?'disabled':''}>Default</button></div>
+  </section>`;
+}
+function backupCard(n){
+  const last=lsGet('daybook.lastBackup');
+  const age=last?Math.round((parseIso(today())-parseIso(last))/864e5):null;
+  const note=last?(age===0?'Last backup: today.':`Last backup: ${age} day${age===1?'':'s'} ago.`):'No backup yet.';
+  return `<section class="card backup" style="--c:var(--ink)">
+    <p class="label">Backup</p>
+    <p class="hint">Everything is stored only on this phone. Export a backup now and then and keep it in Files, iCloud Drive, Google Drive or email it to yourself. Import it on a new phone to get your log and photos back. Use Import file for Strava sessions from Claude too. ${note}</p>
+    <div class="actions"><button class="btn" data-action="export" ${n?'':'disabled'}>${pendingBackup?'Save backup':'Export backup'}</button>
+    <label class="btn plain" for="importFile" style="cursor:pointer">Import file</label>
+    <input type="file" id="importFile" accept="application/json,.json" hidden></div>
+  </section>`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-action]'); if(!b) return;
+  const a=b.dataset.action, u=state.ui;
+  if(a==='tab'){state.tab=b.dataset.tab; lsSet('daybook.tab',state.tab); render(); window.scrollTo(0,0)}
+  else if(a==='day'){state.date=addDays(state.date,+b.dataset.n); render()}
+  else if(a==='go'){state.date=b.dataset.date; render()}
+  else if(a==='today'){state.date=today(); render()}
+  else if(a==='open'){state.date=b.dataset.date; state.tab='journal'; lsSet('daybook.tab','journal'); render(); window.scrollTo(0,0)}
+  else if(a==='mood'){const v=+b.dataset.v; changeDay(state.date,d=>{d.mood=d.mood===v?null:v})}
+  else if(a==='toggle'){u[b.dataset.k]=!u[b.dataset.k]; if(b.dataset.k==='addTrain'){u.exercises=[]; u.editTrain=null; u.editActs=false} if(b.dataset.k==='addFood'){u.rating=0; if(!u.addFood){u.pendingPhotos.forEach(delPhoto); u.pendingPhotos=[]}} renderPanel();
+    const f=$('#trainForm #tDist:not([hidden])')||$('#tDur')||$('#fWhat'); if(f&&!b.dataset.k.startsWith('edit')) f.focus({preventScroll:true})}
+  else if(a==='newnote'){const now=new Date().toISOString(), n={id:newId(),title:'',body:'',created:now,updated:now}; state.notes.push(n); u.noteOpen=n.id; renderPanel(); window.scrollTo(0,0); const ti=$('#noteTitle'); if(ti) ti.focus()}
+  else if(a==='opennote'){u.noteOpen=b.dataset.id; renderPanel(); window.scrollTo(0,0)}
+  else if(a==='closenote'){closeNote()}
+  else if(a==='edittrain'){
+    const t=getDay(state.date).training.find(x=>x.id===b.dataset.id); if(!t) return;
+    const str=v=>v==null||v===0?'':String(v);
+    u.addTrain=true; u.editTrain=t.id; u.sport=t.sport; u.rpe=t.rpe||6;
+    u.exercises=(t.exercises||[]).map(x=>{let ss=normSets(x); if(!ss.length) ss=[{}]; return {id:newId(),name:x.name,count:String(ss.length),sets:ss.map(q=>({reps:str(q.reps),weight:q.weight==null?'':String(q.weight),rpe:str(q.rpe)}))}});
+    renderPanel();
+    const dEl=$('#tDist'); if(dEl&&t.dist) dEl.value=t.dist;
+    $('#tDur').value=t.dur?fmtDur(t.dur):''; $('#tNotes').value=t.notes||'';
+    window.scrollTo(0,0);
+  }
+  else if(a==='exadd'){addExercise()}
+  else if(a==='actadd'){addActivity()}
+  else if(a==='actedit'){u.editActs=!u.editActs; const keep=keepForm('trainForm'); renderPanel(); keep()}
+  else if(a==='actrm'){const v=b.dataset.v; lsSet(ACT_KEY,savedActs().filter(x=>x!==v)); if(u.sport===v) u.sport='Run'; if(!savedActs().length) u.editActs=false; const keep=keepForm('trainForm'); renderPanel(); keep()}
+  else if(a==='exrm'){u.exercises=u.exercises.filter(x=>x.id!==b.dataset.id); const keep=keepForm('trainForm'); renderPanel(); keep()}
+  else if(a==='sport'){u.sport=b.dataset.v; u.editActs=false; const keep=keepForm('trainForm'); renderPanel(); keep()}
+  else if(a==='kind'){u.kind=b.dataset.v; const keep=keepForm('foodForm'); renderPanel(); keep()}
+  else if(a==='rate'){const v=+b.dataset.v; u.rating=u.rating===v?0:v; const keep=keepForm('foodForm'); renderPanel(); keep()}
+  else if(a==='habit'){const id=b.dataset.id; changeDay(state.date,d=>{if(d.habits[id]) delete d.habits[id]; else d.habits[id]=true})}
+  else if(a==='more'){u.tlLimit+=40; renderPanel()}
+  else if(a==='export'){exportBackup()}
+  else if(a==='addphoto'){pickTarget=b.dataset.id; const inp=$('#photoPick'); inp.value=''; inp.click()}
+  else if(a==='viewphoto'){openViewer(b.dataset.id,b.dataset.entry)}
+  else if(a==='closephoto'){closeViewer()}
+  else if(a==='svsync'){stravaSync()}
+  else if(a==='theme'){lsSet('daybook.theme',b.dataset.v); applyTheme(b.dataset.v); applyTextColour(); renderPanel()}
+  else if(a==='texthue-reset'){lsSet('daybook.textHue',null); applyTextColour(null); renderPanel()}
+  else if(a==='svcode'){
+    const code=($('#svCode').value||'').trim(); if(!code){$('#svCode').focus(); return}
+    saveStravaKeys(); if(!sv().clientId||!sv().secret){toast('Enter your Client ID and Client Secret first'); return}
+    exchangeCode(code).then(()=>{u.svSetup=false; state.handoff=null; toast('Strava connected'); renderPanel(); stravaSync()}).catch(stravaError);
+  }
+  else if(a==='copycode'){
+    const inp=$('#svHandoff'); const done=()=>toast('Code copied');
+    try{navigator.clipboard.writeText(inp.value).then(done,()=>{inp.select(); document.execCommand('copy'); done()})}catch(e){inp.select()}
+  }
+  else if(a==='del'||a==='delhabit'||a==='rmphoto'||a==='svoff'||a==='delnote'){
+    if(!b.dataset.armed){b.dataset.armed='1'; const old=b.textContent; b.textContent='Tap again'; setTimeout(()=>{if(b.isConnected){delete b.dataset.armed; b.textContent=old}},3000); return}
+    if(a==='delnote'){state.notes=state.notes.filter(n=>n.id!==b.dataset.id); u.noteOpen=null; writeAll(); renderPanel(); toast('Note deleted'); return}
+    if(a==='svoff'){
+      const s=sv(); if(s.access) fetch(STRAVA+'/oauth/deauthorize',{method:'POST',headers:{Authorization:'Bearer '+s.access}}).catch(()=>{});
+      lsSet(SV_KEY,{clientId:s.clientId,secret:s.secret}); toast('Strava disconnected'); renderPanel(); return;
+    }
+    if(a==='rmphoto'){
+      if(!viewing) return; const {id,entry}=viewing; closeViewer(); delPhoto(id);
+      if(entry==='new'){u.pendingPhotos=u.pendingPhotos.filter(x=>x!==id); const keep=keepForm('foodForm'); renderPanel(); keep()}
+      else {const w=findFood(entry); if(w) changeDay(w.d.date,d=>{const f=d.food.find(x=>x.id===entry); if(f) f.photos=(f.photos||[]).filter(x=>x!==id)})}
+      toast('Photo deleted'); return;
+    }
+    if(a==='del'){const list=b.dataset.list, id=b.dataset.id;
+      if(list==='food'){const f=getDay(state.date).food.find(x=>x.id===id); (f&&f.photos||[]).forEach(delPhoto)}
+      if(list==='training'&&id.startsWith('strava-')) rememberId(REMOVED,id); /* deleted on purpose: never bring it back */
+      changeDay(state.date,d=>{d[list]=d[list].filter(x=>x.id!==id)})}
+    else {state.habits=state.habits.filter(h=>h.id!==b.dataset.id); saveHabits(); render()}
+  }
+});
+function saveStravaKeys(){
+  const id=($('#svId')?.value||'').trim(), sec=($('#svSecret')?.value||'').trim();
+  if(id||sec) svSet({clientId:id.replace(/\D/g,''),secret:sec});
+}
+function keepForm(id){
+  const f=$('#'+id); if(!f) return ()=>{};
+  const vals={}; f.querySelectorAll('input,textarea').forEach(i=>{if(i.id) vals[i.id]=i.value});
+  return ()=>{Object.entries(vals).forEach(([k,v])=>{const el=$('#'+k); if(el&&el.type!=='range') el.value=v})};
+}
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.field){const f=t.dataset.field, v=t.value; changeDay(state.date,d=>{d[f]=v},{render:false,delay:700}); if(t.tagName==='TEXTAREA') autosize(t)}
+  else if(t.id==='textHue'){
+    const h=+t.value; applyTextColour(h); lsSet('daybook.textHue',h);
+    t.classList.remove('off'); t.style.setProperty('--tc',inkFor(h,isDarkNow()));
+    $('#hueName').textContent=hueName(h); const rb=document.querySelector('[data-action=texthue-reset]'); if(rb) rb.disabled=false;
+  }
+  else if(t.dataset.note){const n=state.notes.find(x=>x.id===state.ui.noteOpen); if(n){n[t.dataset.note]=t.value; n.updated=new Date().toISOString(); setStatus('saving','Saving…'); clearTimeout(timers.all); timers.all=setTimeout(()=>{delete timers.all; writeAll()},600)}}
+  else if(t.dataset.ex){const x=state.ui.exercises.find(e=>e.id===t.dataset.ex);
+    if(x&&t.dataset.k==='n'){
+      x.count=t.value; const n=Math.min(20,parseInt(t.value,10));
+      if(n>=1&&n!==x.sets.length){
+        while(x.sets.length<n) x.sets.push(blankSet()); x.sets.length=n;
+        const id=t.id, keep=keepForm('trainForm'); renderPanel(); keep(); const el=$('#'+id); if(el) el.focus({preventScroll:true});
+      }
+    } else if(x){const st=x.sets[+t.dataset.set]; if(st) st[t.dataset.k]=t.value}
+  }
+  else if(t.id==='tRpe'){state.ui.rpe=+t.value; $('#rpeV').textContent=t.value}
+  else if(t.id==='tlSearch'){state.ui.search=t.value; state.ui.tlLimit=40; const pos=t.selectionStart; renderPanel(); const n=$('#tlSearch'); n.focus(); try{n.setSelectionRange(pos,pos)}catch(_){}}
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==='importFile'&&e.target.files[0]){importBackup(e.target.files[0]); e.target.value=''}
+  else if(e.target.id==='photoPick'&&e.target.files.length){
+    const files=[...e.target.files], target=pickTarget, u=state.ui; e.target.value=''; pickTarget=null;
+    (async()=>{
+      if(target==='new'){
+        const ids=await savePhotos(files,MAX_PHOTOS-u.pendingPhotos.length);
+        if(!u.addFood){ids.forEach(delPhoto); return}
+        u.pendingPhotos.push(...ids); const keep=keepForm('foodForm'); renderPanel(); keep();
+      } else {
+        const w=findFood(target); if(!w) return;
+        const ids=await savePhotos(files,MAX_PHOTOS-(w.f.photos||[]).length);
+        if(ids.length) changeDay(w.d.date,d=>{const f=d.food.find(x=>x.id===target); if(f) f.photos=[...(f.photos||[]),...ids]});
+      }
+    })();
+  }
+});
+document.addEventListener('submit',e=>{
+  e.preventDefault(); const f=e.target, u=state.ui;
+  if(f.id==='trainForm'){
+    const typed=$('#tAct')?$('#tAct').value.trim():''; if(typed) addActivity();
+    const sport=u.sport, dist=NO_DIST.includes(sport)?0:parseFloat($('#tDist').value)||0, dur=parseDur($('#tDur').value);
+    const strength=sport==='Strength', pend=strength&&$('#exName')?$('#exName').value.trim():'';
+    if(pend) u.exercises.push({id:newId(),name:pend,count:'',sets:[blankSet()]});
+    const num=v=>{const n=parseFloat(v); return isNaN(n)?null:Math.max(0,n)};
+    const exercises=strength?u.exercises.map(x=>({name:x.name,sets:x.sets.map(q=>{const r=num(q.rpe); return {reps:Math.round(num(q.reps)||0),weight:num(q.weight),rpe:r==null?null:Math.min(10,r)}}).filter(q=>q.reps||q.weight!=null||q.rpe!=null)})):[];
+    if(!dist&&!dur&&!exercises.length){const el=strength?$('#exName'):$('#tDur'); el.focus(); el.placeholder=strength?'Add an exercise first':'Add a time or distance'; return}
+    const entry={id:newId(),sport,dist,dur,rpe:strength?null:u.rpe,notes:cleanBullets($('#tNotes').value)};
+    if(exercises.length) entry.exercises=exercises;
+    const editId=u.editTrain;
+    u.addTrain=false; u.exercises=[]; u.editTrain=null;
+    changeDay(state.date,d=>{
+      const i=editId?d.training.findIndex(x=>x.id===editId):-1;
+      if(i>-1){const old=d.training[i], upd=Object.assign({},old,entry,{id:old.id}); if(!exercises.length) delete upd.exercises; d.training[i]=upd}
+      else d.training.push(entry);
+    });
+    if(editId) toast('Activity updated');
+  } else if(f.id==='foodForm'){
+    const what=$('#fWhat').value.trim(); if(!what){$('#fWhat').focus(); return}
+    const entry={id:newId(),kind:u.kind,what,notes:$('#fNotes').value.trim(),rating:u.rating||0,photos:u.pendingPhotos.slice()};
+    u.addFood=false; u.rating=0; u.pendingPhotos=[]; changeDay(state.date,d=>{d.food.push(entry)});
+  } else if(f.id==='svForm'){
+    saveStravaKeys(); if(!sv().clientId||!sv().secret){toast('Enter your Client ID and Client Secret first'); return}
+    stravaConnect();
+  } else if(f.id==='habitForm'){
+    const name=$('#hName').value.trim(); if(!name) return;
+    state.habits=[...state.habits,{id:newId(),name}]; saveHabits(); renderPanel(); $('#hName')?.focus();
+  }
+});
+document.addEventListener('focusout',()=>{setTimeout(()=>{if(panelStale&&!isTyping()) renderPanel()},50)});
+const isTyping=()=>{const a=document.activeElement; return a&&$('#panel').contains(a)&&/INPUT|TEXTAREA/.test(a.tagName)};
+
+/* rollover at midnight when the app is left open */
+let lastToday=today();
+setInterval(()=>{const t=today(); if(t!==lastToday){if(state.date===lastToday) state.date=t; lastToday=t; render()}},60000);
+
+/* ---------- boot ---------- */
+function boot(){
+  const days=lsGet('daybook.days')||{}; state.days={};
+  Object.entries(days).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k)) state.days[k]=normalize(k,v)});
+  const hs=lsGet('daybook.habits'); if(Array.isArray(hs)) state.habits=hs;
+  const ns=lsGet('daybook.notes'); if(Array.isArray(ns)) state.notes=ns.filter(n=>n&&n.id);
+  applyTheme(currentTheme());
+  applyTextColour();
+  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{applyTheme(currentTheme()); applyTextColour(); if(state.tab==='settings') renderPanel()})}catch(e){}
+  statusIdle(); render();
+  stravaReturn();
+  /* ask the phone not to clear this app's storage */
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  /* make the app work with no connection */
+  if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+    window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  }
+}
+boot();
+})();
+</script>
+</body>
+</html>
