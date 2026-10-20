@@ -230,6 +230,18 @@ textarea.notebody{min-height:260px}
 .planday.today h3::after{content:" \00b7  Today";font-weight:400;color:var(--muted)}
 .planday .did{font-size:12px;color:var(--muted);font-family:var(--mono);text-align:right}
 .planday textarea{min-height:72px}
+.rems{display:grid;gap:6px}
+.remrow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:var(--sunk);font-size:14px}
+.remrow svg{width:16px;height:16px;flex:none;color:var(--train)}
+.remrow .rt{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.remrow .rx{flex:1;min-width:0;overflow-wrap:anywhere}
+.remrow.past{opacity:.55}
+.remrow .del{padding:4px 6px}
+.remadd{justify-self:start;font-size:14px;font-weight:700;color:var(--muted);padding:6px 2px;display:inline-flex;align-items:center;gap:6px}
+.remadd svg{width:16px;height:16px}
+.remform{display:grid;gap:8px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.remform .row3{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.remform input{min-width:0}
 .planday.today textarea{border-color:color-mix(in srgb,var(--train) 55%,var(--line))}
 .excount{display:flex;align-items:center;gap:10px}
 .excount input{width:76px;padding:9px 6px;text-align:center;font-family:var(--mono);background:var(--surface)}
@@ -307,14 +319,31 @@ const parseIso = s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-
 const addDays = (s,n)=>{const d=parseIso(s);d.setDate(d.getDate()+n);return iso(d)};
 const today = ()=>iso(new Date());
 const newId = ()=>Math.random().toString(36).slice(2,10);
+
+/* ---------- native app (iPhone app build via Capacitor). In Safari these are all off and the web versions are used ---------- */
+const CAP=window.Capacitor, NATIVE=!!(CAP&&CAP.isNativePlatform&&CAP.isNativePlatform());
+const plugs={}; const plug=n=>NATIVE?(plugs[n]||(plugs[n]=CAP.registerPlugin(n))):null;
+/* keep a second copy of everything in the app's own storage, so iOS can't wipe it with the web cache */
+let mirrorT=null;
+function mirror(){
+  if(!NATIVE) return; clearTimeout(mirrorT);
+  mirrorT=setTimeout(()=>{try{const o={}; for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i); if(k&&k.startsWith('daybook.')) o[k]=localStorage.getItem(k)}
+    plug('Preferences').set({key:'daybook.mirror',value:JSON.stringify(o)}).catch(()=>{})}catch(e){}},400);
+}
+async function restoreMirror(){
+  try{if(localStorage.getItem('daybook.days')) return;
+    const r=await plug('Preferences').get({key:'daybook.mirror'}); if(!r||!r.value) return;
+    Object.entries(JSON.parse(r.value)).forEach(([k,v])=>{if(k.startsWith('daybook.')&&typeof v==='string') localStorage.setItem(k,v)});
+  }catch(e){}
+}
 const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const lsGet = k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
-const lsSet = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const lsSet = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v)); if(typeof mirror==='function') mirror()}catch(e){}};
 
 const state = {
   date: today(), tab: lsGet('daybook.tab') || 'journal',
-  days: {}, habits: DEFAULT_HABITS, notes: [], plans: {},
-  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, notesView:lsGet('daybook.notesView')||'notes', planWeek:null, tlLimit:40, search:''}
+  days: {}, habits: DEFAULT_HABITS, notes: [], plans: {}, reminders: [],
+  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, notesView:lsGet('daybook.notesView')||'notes', planWeek:null, remFor:null, tlLimit:40, search:''}
 };
 
 const emptyDay = date=>({date, mood:null, highlight:'', notes:'', learned:'', learnedNotes:'', training:[], food:[], habits:{}});
@@ -355,7 +384,7 @@ function setStatus(s,msg){const el=$('#status'); el.dataset.s=s; el.textContent=
 function statusIdle(){setStatus('saved','Saved on this phone')}
 function writeAll(){
   const out={}; Object.values(state.days).forEach(d=>{if(!isEmpty(d)) out[d.date]=d});
-  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); localStorage.setItem('daybook.plans',JSON.stringify(cleanPlans())); statusIdle(); return true}
+  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); localStorage.setItem('daybook.plans',JSON.stringify(cleanPlans())); localStorage.setItem('daybook.reminders',JSON.stringify(state.reminders)); mirror(); statusIdle(); return true}
   catch(e){setStatus('error','Phone storage is full. Export a backup, then delete old entries'); return false}
 }
 function changeDay(date,fn,{render:doRender=true,delay=0}={}){
@@ -476,11 +505,17 @@ async function buildBackup(){
   Object.values(state.days).forEach(d=>{if(!isEmpty(d)){days[d.date]=d; d.food.forEach(f=>(f.photos||[]).forEach(id=>ids.add(id)))}});
   const photos={};
   for(const id of ids){try{const b=await getPhoto(id); if(b) photos[id]=await blobToDataURL(b)}catch(e){}}
-  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),plans:cleanPlans(),days,photos};
+  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),plans:cleanPlans(),reminders:state.reminders,days,photos};
   const name=`daybook-backup-${today()}.json`;
   return new File([JSON.stringify(data)],name,{type:'application/json'});
 }
+async function nativeShareFile(file){
+  const path=file.name, data=await file.text();
+  const w=await plug('Filesystem').writeFile({path,data,directory:'CACHE',encoding:'utf8'});
+  await plug('Share').share({title:file.name,files:[w.uri]});
+}
 function deliverBackup(file){
+  if(NATIVE){nativeShareFile(file).then(()=>{pendingBackup=null; lsSet('daybook.lastBackup',today()); if(state.tab==='timeline') renderPanel()}).catch(()=>toast('Backup not saved')); return}
   const done=()=>{pendingBackup=null; lsSet('daybook.lastBackup',today()); if(state.tab==='timeline') renderPanel()};
   if(navigator.canShare&&navigator.canShare({files:[file]})){
     navigator.share({files:[file],title:'Daybook backup'}).then(done).catch(e=>{
@@ -532,9 +567,14 @@ function importBackup(file){
         const inc={days:[...Array(7)].map((_,i)=>String(v.days[i]||'')),updated:v.updated||''}, cur=state.plans[k];
         if(!cur||planIsEmpty(cur)||(inc.updated||'')>(cur.updated||'')){state.plans[k]=inc; npl++}
       });
+      let nr=0;
+      if(Array.isArray(data.reminders)){const have=new Set(state.reminders.map(x=>x.id)); data.reminders.forEach(x=>{
+        if(!x||typeof x.id!=='string'||have.has(x.id)||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(x.at)) return;
+        state.reminders.push({id:x.id,at:x.at,text:String(x.text||'Reminder').slice(0,200),note:typeof x.note==='string'?x.note:null,nid:Number.isInteger(x.nid)?x.nid:newNid()}); nr++})}
+      if(nr) syncNotifications();
       if(Array.isArray(data.habits)){const ids=new Set(state.habits.map(h=>h.id)); data.habits.forEach(h=>{if(h&&h.id&&!ids.has(h.id)) state.habits.push({id:h.id,name:String(h.name||'Habit')})})}
       writeAll(); render();
-      toast(n||np||nn||npl?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}${npl?`, ${npl} week plan${npl===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
+      toast(n||np||nn||npl||nr?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}${npl?`, ${npl} week plan${npl===1?'':'s'}`:''}${nr?`, ${nr} reminder${nr===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
     }catch(e){toast('That file isn’t a Daybook backup')}
   };
   r.readAsText(file);
@@ -601,11 +641,13 @@ function fromStrava(a){
   return {id:'strava-'+a.id,date:st.slice(0,10),time:st.slice(11,16),sport,dist,dur:Math.round(a.moving_time||0),rpe:null,notes:bits.join(' · '),source:'Strava'};
 }
 const STRAVA='https://www.strava.com';
-const redirectURI=()=>location.origin+location.pathname;
+const redirectURI=()=>NATIVE?'daybook://localhost/strava':location.origin+location.pathname;
 let syncing=false;
 function stravaConnect(){
   const s=sv(); if(!s.clientId||!s.secret){toast('Enter your Client ID and Client Secret first'); return}
-  location.href=`${STRAVA}/oauth/mobile/authorize?client_id=${encodeURIComponent(s.clientId)}&redirect_uri=${encodeURIComponent(redirectURI())}&response_type=code&approval_prompt=auto&scope=read,activity:read_all&state=daybook`;
+  const url=`${STRAVA}/oauth/mobile/authorize?client_id=${encodeURIComponent(s.clientId)}&redirect_uri=${encodeURIComponent(redirectURI())}&response_type=code&approval_prompt=auto&scope=read,activity:read_all&state=daybook`;
+  if(NATIVE){plug('Browser').open({url}).catch(()=>toast('Couldn\u2019t open Strava')); return}
+  location.href=url;
 }
 async function tokenCall(body){
   let r; try{r=await fetch(STRAVA+'/oauth/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})}
@@ -662,9 +704,9 @@ async function stravaSync(){
   }catch(e){stravaError(e)}
   finally{syncing=false; if(state.tab==='training') renderPanel()}
 }
-function stravaReturn(){
-  const q=new URLSearchParams(location.search); if(q.get('state')!=='daybook') return;
-  history.replaceState(null,'',location.pathname);
+function stravaReturn(q){
+  q=q||new URLSearchParams(location.search); if(q.get('state')!=='daybook') return;
+  if(!NATIVE) history.replaceState(null,'',location.pathname);
   if(q.get('error')){toast('Strava connection cancelled'); return}
   const code=q.get('code'); if(!code) return;
   state.tab='training'; lsSet('daybook.tab','training');
@@ -694,7 +736,7 @@ function stravaCard(){
   if(!u.svSetup) return `<button class="btn ghost" data-action="toggle" data-k="svSetup">Connect Strava</button>`;
   return `<form class="card sv" id="svForm">
     <p class="label">Connect Strava</p>
-    <p class="hint">1. On strava.com/settings/api, create an app with Authorization Callback Domain <b>${esc(location.host||'your site')}</b>.</p>
+    <p class="hint">1. On strava.com/settings/api, create an app with Authorization Callback Domain <b>${esc(NATIVE?'localhost':(location.host||'your site'))}</b>.</p>
     <div class="row"><div class="field"><label class="label" for="svId">Client ID</label><input id="svId" inputmode="numeric" autocomplete="off" value="${esc(s.clientId||'')}"></div>
     <div class="field"><label class="label" for="svSecret">Client Secret</label><input id="svSecret" type="password" autocomplete="off" value="${esc(s.secret||'')}"></div></div>
     <p class="hint">2. Tap Connect and approve on Strava. Your key stays on this phone.</p>
@@ -863,6 +905,62 @@ const exList=t=>(t.exercises&&t.exercises.length)?`<ul class="exlist">${t.exerci
 
 const noteIsEmpty=n=>!String(n.title||'').trim()&&!cleanBullets(n.body);
 const noteFirstLine=b=>(String(b||'').split('\n').find(l=>l.replace(/^•\s*/,'').trim())||'').replace(/^•\s*/,'');
+/* ---------- reminders: a phone notification in the app, a Calendar alert in Safari ---------- */
+const BELL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
+const newNid=()=>1+Math.floor(Math.random()*2e9);
+const remDate=r=>{const [d,t]=r.at.split('T'); const x=parseIso(d); const [h,m]=t.split(':'); x.setHours(+h,+m,0,0); return x};
+const nowLocal=()=>{const d=new Date(); return iso(d)+'T'+pad(d.getHours())+':'+pad(d.getMinutes())};
+function remRows(list,withDate){
+  return list.length?`<div class="rems">${list.slice().sort((a,b)=>a.at.localeCompare(b.at)).map(r=>`<div class="remrow${r.at<nowLocal()?' past':''}">${BELL}<span class="rt">${withDate?esc(shortDate(r.at.slice(0,10)))+' ':''}${esc(r.at.slice(11))}</span><span class="rx">${esc(r.text)}</span><button class="del" data-action="delrem" data-id="${r.id}" aria-label="Delete reminder">\u00d7</button></div>`).join('')}</div>`:'';
+}
+function remForm(key,date,text,withDate){
+  const u=state.ui;
+  if(u.remFor!==key) return `<button type="button" class="remadd" data-action="remopen" data-k="${esc(key)}">${BELL}Add reminder</button>`;
+  return `<div class="remform" data-k="${esc(key)}">
+    <div class="row3">${withDate?`<input type="date" id="remDate" value="${esc(date)}" aria-label="Reminder date">`:`<input type="hidden" id="remDate" value="${esc(date)}">`}<input type="time" id="remTime" value="${date===today()&&new Date().getHours()>=17?'20:00':'18:00'}" aria-label="Reminder time"${withDate?'':' style="grid-column:1"'}>${withDate?'':`<span></span>`}</div>
+    <input id="remText" value="${esc(text)}" placeholder="What to remind you about" maxlength="200" autocomplete="off">
+    <div class="actions"><button type="button" class="btn plain" data-action="remcancel">Cancel</button><button type="button" class="btn" data-action="remsave" data-note="${key.startsWith('note:')?esc(key.slice(5)):''}">${NATIVE?'Save reminder':'Add to Calendar'}</button></div>
+    ${NATIVE?'':`<p class="hint">Your iPhone\u2019s Calendar will alert you at this time. Tap Add on the next screen.</p>`}
+  </div>`;
+}
+function icsFor(r){
+  const e=s=>String(s).replace(/\\/g,'\\\\').replace(/[,;]/g,m=>'\\'+m).replace(/\n/g,'\\n');
+  const st=r.at.replace(/[-:]/g,'')+'00', stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+  return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Daybook//Reminders//EN','BEGIN:VEVENT','UID:'+r.id+'@daybook','DTSTAMP:'+stamp,'DTSTART:'+st,'DURATION:PT15M',
+    'SUMMARY:'+e(r.text),'DESCRIPTION:'+e('Reminder from Daybook'),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+e(r.text),'TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n')+'\r\n';
+}
+function toCalendar(r){
+  const blob=new Blob([icsFor(r)],{type:'text/calendar'}), url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; if(!/iP(hone|ad|od)/.test(navigator.userAgent)) a.download='daybook-reminder.ics';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+async function notifyAllowed(ask){
+  const LN=plug('LocalNotifications'); if(!LN) return false;
+  try{let p=await LN.checkPermissions(); if(p.display==='prompt'&&ask) p=await LN.requestPermissions(); return p.display==='granted'}catch(e){return false}
+}
+async function scheduleRem(r){
+  if(!(await notifyAllowed(true))){toast('Notifications are off for Daybook. Turn them on in iPhone Settings \u2192 Daybook'); return false}
+  await plug('LocalNotifications').schedule({notifications:[{id:r.nid,title:'Daybook',body:r.text,schedule:{at:remDate(r),allowWhileIdle:true},extra:{id:r.id}}]});
+  return true;
+}
+function cancelRem(r){if(NATIVE) plug('LocalNotifications').cancel({notifications:[{id:r.nid}]}).catch(()=>{})}
+/* app start / after a restore: make sure every future reminder is booked with iOS */
+async function syncNotifications(){
+  if(!NATIVE||!(await notifyAllowed(false))) return;
+  try{const LN=plug('LocalNotifications'), pend=new Set(((await LN.getPending()).notifications||[]).map(x=>+x.id)), now=nowLocal();
+    const due=state.reminders.filter(r=>r.at>now&&!pend.has(r.nid));
+    if(due.length) await LN.schedule({notifications:due.map(r=>({id:r.nid,title:'Daybook',body:r.text,schedule:{at:remDate(r),allowWhileIdle:true},extra:{id:r.id}}))});
+  }catch(e){}
+}
+async function saveReminder(noteId){
+  const d=($('#remDate')||{}).value, t=($('#remTime')||{}).value, text=(($('#remText')||{}).value||'').trim()||'Reminder';
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d||'')||!/^\d{2}:\d{2}$/.test(t||'')){toast('Pick a day and a time'); return}
+  const r={id:newId(),at:d+'T'+t,text,note:noteId||null,nid:newNid()};
+  if(r.at<=nowLocal()){toast('That time has already passed'); return}
+  if(NATIVE){if(!(await scheduleRem(r))) return} else toCalendar(r);
+  state.reminders.push(r); state.ui.remFor=null; writeAll(); renderPanel();
+  toast(NATIVE?`Reminder set for ${remDate(r).toLocaleDateString('en-GB',{weekday:'short'})} ${t}`:'Reminder saved. Add it to Calendar to get the alert');
+}
 const planIsEmpty=p=>!p||!(p.days||[]).some(x=>cleanBullets(x));
 function cleanPlans(){const o={}; Object.entries(state.plans).forEach(([k,v])=>{if(!planIsEmpty(v)) o[k]=v}); return o}
 const getPlan=w=>state.plans[w]||{days:['','','','','','',''],updated:''};
@@ -878,14 +976,15 @@ function planPanel(){
   const days=[...Array(7)].map((_,i)=>{const ds=addDays(w,i), dt=parseIso(ds), dd=getDay(ds);
     const did=dd.training.map(x=>x.sport+(x.dur?' '+fmtHM(x.dur):'')).join(', ');
     return `<div class="planday${ds===t?' today':''}"><header><h3>${dt.toLocaleDateString('en-GB',{weekday:'long'})} <span class="hint" style="font-weight:400">${dt.getDate()} ${dt.toLocaleDateString('en-GB',{month:'short'})}</span></h3>${did?`<span class="did">Done: ${esc(did)}</span>`:''}</header>
-    <textarea class="bullets plan" data-plan="${i}" aria-label="Plan for ${dt.toLocaleDateString('en-GB',{weekday:'long'})}" placeholder="${i===6?'• Rest, or a long easy session':'• e.g. Run 8 km easy, or Strength: legs'}">${esc(p.days[i]||'')}</textarea></div>`}).join('');
+    <textarea class="bullets plan" data-plan="${i}" aria-label="Plan for ${dt.toLocaleDateString('en-GB',{weekday:'long'})}" placeholder="${i===6?'• Rest, or a long easy session':'• e.g. Run 8 km easy, or Strength: legs'}">${esc(p.days[i]||'')}</textarea>
+    ${remRows(state.reminders.filter(r=>!r.note&&r.at.slice(0,10)===ds),false)}${ds>=t?remForm('day:'+ds,ds,noteFirstLine(p.days[i])||'',false):''}</div>`}).join('');
   return `<div class="sechead"><h2>Notes</h2></div>
   ${notesSwitch('plan')}
   <section class="card">
     <div class="weeknav"><button type="button" data-action="planweek" data-n="-7" aria-label="Previous week">\u2039</button><b>${esc(wl.title)}${wl.sub?`<br><span class="hint" style="font-family:inherit">${esc(wl.sub)}</span>`:''}</b><button type="button" data-action="planweek" data-n="7" aria-label="Next week">\u203a</button></div>
     ${planIsEmpty(p)&&!planIsEmpty(prev)?`<button class="btn plain" data-action="plancopy">Copy last week\u2019s plan</button>`:''}
     ${days}
-    <p class="hint">Write what you plan to do each day. Saves as you type. What you log in Activity shows next to each day.</p>
+    <p class="hint">Write what you plan to do each day. Saves as you type. What you log in Activity shows next to each day. Add a reminder to get ${NATIVE?'a notification':'a Calendar alert'} at the time you choose.</p>
   </section>`;
 }
 function notesPanel(){
@@ -897,6 +996,7 @@ function notesPanel(){
     <input id="noteTitle" data-note="title" value="${esc(n.title)}" placeholder="Title" maxlength="120" autocomplete="off">
     <textarea id="noteBody" class="bullets notebody" data-note="body" placeholder="• Start typing. Each new line gets a bullet">${esc(n.body)}</textarea>
     <p class="hint">Saves as you type. Enter on an empty bullet ends the list.</p>
+    ${remRows(state.reminders.filter(r=>r.note===n.id),true)}${remForm('note:'+n.id,today(),n.title||noteFirstLine(n.body)||'',true)}
   </section>`;
   const list=state.notes.filter(x=>!noteIsEmpty(x)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));
   return `<div class="sechead"><h2>Notes</h2><span class="hint">${list.length?list.length+' note'+(list.length===1?'':'s'):''}</span></div>
@@ -999,7 +1099,7 @@ function hueName(h){
 }
 function settingsPanel(){
   return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}
-  <p class="hint" style="text-align:center;margin-top:8px">Daybook v22 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
+  <p class="hint" style="text-align:center;margin-top:8px">Daybook v23 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
 }
 function appearanceCard(){
   const t=currentTheme(), opt=[['light','Light'],['dark','Dark'],['system','Match phone']];
@@ -1042,9 +1142,13 @@ document.addEventListener('click',e=>{
     const f=$('#trainForm #tDist:not([hidden])')||$('#tDur')||$('#fWhat'); if(f&&!b.dataset.k.startsWith('edit')) f.focus({preventScroll:true})}
   else if(a==='newnote'){const now=new Date().toISOString(), n={id:newId(),title:'',body:'',created:now,updated:now}; state.notes.push(n); u.noteOpen=n.id; renderPanel(); window.scrollTo(0,0); const ti=$('#noteTitle'); if(ti) ti.focus()}
   else if(a==='opennote'){u.noteOpen=b.dataset.id; renderPanel(); window.scrollTo(0,0)}
-  else if(a==='closenote'){closeNote()}
+  else if(a==='closenote'){u.remFor=null; closeNote()}
+  else if(a==='remopen'){u.remFor=b.dataset.k; const keep=keepForm('panel'); renderPanel(); keep(); const el=$('#remTime'); if(el) el.focus({preventScroll:true})}
+  else if(a==='remcancel'){u.remFor=null; renderPanel()}
+  else if(a==='remsave'){saveReminder(b.dataset.note||null)}
+  else if(a==='delrem'){const r=state.reminders.find(x=>x.id===b.dataset.id); if(r){cancelRem(r); state.reminders=state.reminders.filter(x=>x!==r); writeAll(); renderPanel(); toast(NATIVE?'Reminder deleted':'Reminder deleted. Remove it from Calendar too if you added it')}}
   else if(a==='notesview'){u.notesView=b.dataset.v; lsSet('daybook.notesView',u.notesView); renderPanel()}
-  else if(a==='planweek'){u.planWeek=addDays(u.planWeek||monday(today()),+b.dataset.n); renderPanel()}
+  else if(a==='planweek'){u.remFor=null; u.planWeek=addDays(u.planWeek||monday(today()),+b.dataset.n); renderPanel()}
   else if(a==='plancopy'){const w=u.planWeek||monday(today()), pv=state.plans[addDays(w,-7)]; if(pv){state.plans[w]={days:pv.days.slice(),updated:new Date().toISOString()}; writeAll(); renderPanel(); toast('Copied last week\u2019s plan')}}
   else if(a==='edittrain'){
     const t=getDay(state.date).training.find(x=>x.id===b.dataset.id); if(!t) return;
@@ -1084,7 +1188,7 @@ document.addEventListener('click',e=>{
   }
   else if(a==='del'||a==='delhabit'||a==='rmphoto'||a==='svoff'||a==='delnote'){
     if(!b.dataset.armed){b.dataset.armed='1'; const old=b.textContent; b.textContent='Tap again'; setTimeout(()=>{if(b.isConnected){delete b.dataset.armed; b.textContent=old}},3000); return}
-    if(a==='delnote'){state.notes=state.notes.filter(n=>n.id!==b.dataset.id); u.noteOpen=null; writeAll(); renderPanel(); toast('Note deleted'); return}
+    if(a==='delnote'){state.reminders.filter(r=>r.note===b.dataset.id).forEach(cancelRem); state.reminders=state.reminders.filter(r=>r.note!==b.dataset.id); state.notes=state.notes.filter(n=>n.id!==b.dataset.id); u.noteOpen=null; writeAll(); renderPanel(); toast('Note deleted'); return}
     if(a==='svoff'){
       const s=sv(); if(s.access) fetch(STRAVA+'/oauth/deauthorize',{method:'POST',headers:{Authorization:'Bearer '+s.access}}).catch(()=>{});
       lsSet(SV_KEY,{clientId:s.clientId,secret:s.secret}); toast('Strava disconnected'); renderPanel(); return;
@@ -1194,6 +1298,7 @@ function boot(){
   const days=lsGet('daybook.days')||{}; state.days={};
   Object.entries(days).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k)) state.days[k]=normalize(k,v)});
   const hs=lsGet('daybook.habits'); if(Array.isArray(hs)) state.habits=hs;
+  const rm=lsGet('daybook.reminders'); if(Array.isArray(rm)) state.reminders=rm.filter(r=>r&&r.id&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(r.at));
   const pl=lsGet('daybook.plans'); if(pl&&typeof pl==='object') state.plans=pl;
   const ns=lsGet('daybook.notes'); if(Array.isArray(ns)) state.notes=ns.filter(n=>n&&n.id);
   applyTheme(currentTheme());
@@ -1201,6 +1306,11 @@ function boot(){
   try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{applyTheme(currentTheme()); applyTextColour(); if(state.tab==='settings') renderPanel()})}catch(e){}
   statusIdle(); render();
   stravaReturn();
+  if(NATIVE){
+    syncNotifications();
+    /* Strava sends you back to the app on daybook://localhost/strava?code=… */
+    try{plug('App').addListener('appUrlOpen',ev=>{try{const u=new URL(ev.url); if(u.protocol==='daybook:'){plug('Browser').close().catch(()=>{}); stravaReturn(u.searchParams)}}catch(e){}})}catch(e){}
+  }
   /* ask the phone not to clear this app's storage */
   try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
   /* make the app work with no connection */
@@ -1208,7 +1318,7 @@ function boot(){
     window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
   }
 }
-boot();
+if(NATIVE) restoreMirror().then(boot); else boot();
 })();
 </script>
 </body>

@@ -4,6 +4,10 @@ A private, offline log for your days: journal, activity, food and habits. Everyt
 
 **Use it:** open https://fijyatta-netizen.github.io/daybook/ in Safari on your iPhone, tap Share → Add to Home Screen, and open Daybook from the new icon.
 
+## iPhone app
+
+The same Daybook can also be installed as a proper iPhone app with reminder notifications. Setup on a Mac: see [APP-SETUP.md](APP-SETUP.md).
+
 ## Copyright
 
 Copyright © 2026 Fyat. All rights reserved.

@@ -1,0 +1,13 @@
+{
+  "appId": "io.github.fijyattanetizen.daybook",
+  "appName": "Daybook",
+  "webDir": "www",
+  "backgroundColor": "#2A2C30",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#2A2C30"
+  },
+  "plugins": {
+    "LocalNotifications": {}
+  }
+}
