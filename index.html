@@ -217,6 +217,20 @@ textarea.bullets{min-height:96px}
 textarea.notebody{min-height:260px}
 .notehead{display:flex;justify-content:space-between;align-items:center;gap:10px}
 #noteTitle{font-weight:700;font-size:18px}
+.notesw{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:var(--sunk)}
+.notesw button{min-height:40px;border-radius:9px;font-weight:700;font-size:14px;color:var(--muted)}
+.notesw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.weeknav b{font-family:var(--display);font-weight:600;font-size:17px;text-align:center}
+.weeknav button{min-width:44px;min-height:44px;border-radius:12px;background:var(--sunk);color:var(--ink);font-size:20px;font-weight:700}
+.planday{display:grid;gap:6px}
+.planday header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.planday h3{margin:0;font-size:15px;font-weight:700}
+.planday.today h3{color:var(--train)}
+.planday.today h3::after{content:" \00b7  Today";font-weight:400;color:var(--muted)}
+.planday .did{font-size:12px;color:var(--muted);font-family:var(--mono);text-align:right}
+.planday textarea{min-height:72px}
+.planday.today textarea{border-color:color-mix(in srgb,var(--train) 55%,var(--line))}
 .excount{display:flex;align-items:center;gap:10px}
 .excount input{width:76px;padding:9px 6px;text-align:center;font-family:var(--mono);background:var(--surface)}
 .exgrid{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:6px;align-items:center}
@@ -299,8 +313,8 @@ const lsSet = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 
 const state = {
   date: today(), tab: lsGet('daybook.tab') || 'journal',
-  days: {}, habits: DEFAULT_HABITS, notes: [],
-  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, tlLimit:40, search:''}
+  days: {}, habits: DEFAULT_HABITS, notes: [], plans: {},
+  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, notesView:lsGet('daybook.notesView')||'notes', planWeek:null, tlLimit:40, search:''}
 };
 
 const emptyDay = date=>({date, mood:null, highlight:'', notes:'', learned:'', learnedNotes:'', training:[], food:[], habits:{}});
@@ -341,7 +355,7 @@ function setStatus(s,msg){const el=$('#status'); el.dataset.s=s; el.textContent=
 function statusIdle(){setStatus('saved','Saved on this phone')}
 function writeAll(){
   const out={}; Object.values(state.days).forEach(d=>{if(!isEmpty(d)) out[d.date]=d});
-  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); statusIdle(); return true}
+  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); localStorage.setItem('daybook.plans',JSON.stringify(cleanPlans())); statusIdle(); return true}
   catch(e){setStatus('error','Phone storage is full. Export a backup, then delete old entries'); return false}
 }
 function changeDay(date,fn,{render:doRender=true,delay=0}={}){
@@ -462,7 +476,7 @@ async function buildBackup(){
   Object.values(state.days).forEach(d=>{if(!isEmpty(d)){days[d.date]=d; d.food.forEach(f=>(f.photos||[]).forEach(id=>ids.add(id)))}});
   const photos={};
   for(const id of ids){try{const b=await getPhoto(id); if(b) photos[id]=await blobToDataURL(b)}catch(e){}}
-  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),days,photos};
+  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),plans:cleanPlans(),days,photos};
   const name=`daybook-backup-${today()}.json`;
   return new File([JSON.stringify(data)],name,{type:'application/json'});
 }
@@ -512,9 +526,15 @@ function importBackup(file){
         const i=state.notes.findIndex(n=>n.id===inc.id);
         if(i<0){state.notes.push(inc); nn++} else if((inc.updated||'')>(state.notes[i].updated||'')){state.notes[i]=inc; nn++}
       });
+      let npl=0;
+      if(data.plans&&typeof data.plans==='object') Object.entries(data.plans).forEach(([k,v])=>{
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||!v||!Array.isArray(v.days)) return;
+        const inc={days:[...Array(7)].map((_,i)=>String(v.days[i]||'')),updated:v.updated||''}, cur=state.plans[k];
+        if(!cur||planIsEmpty(cur)||(inc.updated||'')>(cur.updated||'')){state.plans[k]=inc; npl++}
+      });
       if(Array.isArray(data.habits)){const ids=new Set(state.habits.map(h=>h.id)); data.habits.forEach(h=>{if(h&&h.id&&!ids.has(h.id)) state.habits.push({id:h.id,name:String(h.name||'Habit')})})}
       writeAll(); render();
-      toast(n||np||nn?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
+      toast(n||np||nn||npl?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}${npl?`, ${npl} week plan${npl===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
     }catch(e){toast('That file isn’t a Daybook backup')}
   };
   r.readAsText(file);
@@ -713,7 +733,7 @@ function renderPanel(){
   p.innerHTML=fn(d); panelStale=false; hydratePhotos(p);
   p.querySelectorAll('textarea').forEach(autosize);
 }
-function autosize(ta){ta.style.height='auto'; ta.style.height=Math.max(ta.classList.contains('notebody')?260:ta.classList.contains('bullets')?96:140,ta.scrollHeight+2)+'px'}
+function autosize(ta){ta.style.height='auto'; ta.style.height=Math.max(ta.classList.contains('notebody')?260:ta.classList.contains('plan')?72:ta.classList.contains('bullets')?96:140,ta.scrollHeight+2)+'px'}
 
 function journalPanel(d){
   const tSec=d.training.reduce((a,t)=>a+(t.dur||0),0);
@@ -843,7 +863,33 @@ const exList=t=>(t.exercises&&t.exercises.length)?`<ul class="exlist">${t.exerci
 
 const noteIsEmpty=n=>!String(n.title||'').trim()&&!cleanBullets(n.body);
 const noteFirstLine=b=>(String(b||'').split('\n').find(l=>l.replace(/^•\s*/,'').trim())||'').replace(/^•\s*/,'');
+const planIsEmpty=p=>!p||!(p.days||[]).some(x=>cleanBullets(x));
+function cleanPlans(){const o={}; Object.entries(state.plans).forEach(([k,v])=>{if(!planIsEmpty(v)) o[k]=v}); return o}
+const getPlan=w=>state.plans[w]||{days:['','','','','','',''],updated:''};
+const notesSwitch=v=>`<div class="notesw" role="group" aria-label="Notes view"><button type="button" data-action="notesview" data-v="notes" aria-pressed="${v==='notes'}">Notes</button><button type="button" data-action="notesview" data-v="plan" aria-pressed="${v==='plan'}">Week plan</button></div>`;
+function weekLabel(w){
+  const a=parseIso(w), b=parseIso(addDays(w,6)), m=d=>d.toLocaleDateString('en-GB',{month:'short'});
+  const range=a.getMonth()===b.getMonth()?`${a.getDate()}\u2013${b.getDate()} ${m(b)}`:`${a.getDate()} ${m(a)} \u2013 ${b.getDate()} ${m(b)}`;
+  const cur=monday(today()), name=w===cur?'This week':w===addDays(cur,7)?'Next week':w===addDays(cur,-7)?'Last week':'';
+  return name?{title:name,sub:range}:{title:range,sub:''};
+}
+function planPanel(){
+  const u=state.ui, w=u.planWeek||monday(today()), p=getPlan(w), wl=weekLabel(w), t=today(), prev=state.plans[addDays(w,-7)];
+  const days=[...Array(7)].map((_,i)=>{const ds=addDays(w,i), dt=parseIso(ds), dd=getDay(ds);
+    const did=dd.training.map(x=>x.sport+(x.dur?' '+fmtHM(x.dur):'')).join(', ');
+    return `<div class="planday${ds===t?' today':''}"><header><h3>${dt.toLocaleDateString('en-GB',{weekday:'long'})} <span class="hint" style="font-weight:400">${dt.getDate()} ${dt.toLocaleDateString('en-GB',{month:'short'})}</span></h3>${did?`<span class="did">Done: ${esc(did)}</span>`:''}</header>
+    <textarea class="bullets plan" data-plan="${i}" aria-label="Plan for ${dt.toLocaleDateString('en-GB',{weekday:'long'})}" placeholder="${i===6?'• Rest, or a long easy session':'• e.g. Run 8 km easy, or Strength: legs'}">${esc(p.days[i]||'')}</textarea></div>`}).join('');
+  return `<div class="sechead"><h2>Notes</h2></div>
+  ${notesSwitch('plan')}
+  <section class="card">
+    <div class="weeknav"><button type="button" data-action="planweek" data-n="-7" aria-label="Previous week">\u2039</button><b>${esc(wl.title)}${wl.sub?`<br><span class="hint" style="font-family:inherit">${esc(wl.sub)}</span>`:''}</b><button type="button" data-action="planweek" data-n="7" aria-label="Next week">\u203a</button></div>
+    ${planIsEmpty(p)&&!planIsEmpty(prev)?`<button class="btn plain" data-action="plancopy">Copy last week\u2019s plan</button>`:''}
+    ${days}
+    <p class="hint">Write what you plan to do each day. Saves as you type. What you log in Activity shows next to each day.</p>
+  </section>`;
+}
 function notesPanel(){
+  if(state.ui.notesView==='plan'&&!state.ui.noteOpen) return planPanel();
   const u=state.ui, n=u.noteOpen&&state.notes.find(x=>x.id===u.noteOpen);
   if(n) return `<div class="sechead"><h2>Notes</h2></div>
   <section class="card">
@@ -854,6 +900,7 @@ function notesPanel(){
   </section>`;
   const list=state.notes.filter(x=>!noteIsEmpty(x)).sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));
   return `<div class="sechead"><h2>Notes</h2><span class="hint">${list.length?list.length+' note'+(list.length===1?'':'s'):''}</span></div>
+  ${notesSwitch('notes')}
   <button class="btn ghost" data-action="newnote">New note</button>
   ${list.length?`<div class="tl">${list.map(x=>{const when=x.updated?shortDate(iso(new Date(x.updated))):'';
     const prev=String(x.body||'').split('\n').map(l=>l.trim()).filter(l=>l&&l!=='•').join('  ');
@@ -952,7 +999,7 @@ function hueName(h){
 }
 function settingsPanel(){
   return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}
-  <p class="hint" style="text-align:center;margin-top:8px">Daybook v21 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
+  <p class="hint" style="text-align:center;margin-top:8px">Daybook v22 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
 }
 function appearanceCard(){
   const t=currentTheme(), opt=[['light','Light'],['dark','Dark'],['system','Match phone']];
@@ -996,6 +1043,9 @@ document.addEventListener('click',e=>{
   else if(a==='newnote'){const now=new Date().toISOString(), n={id:newId(),title:'',body:'',created:now,updated:now}; state.notes.push(n); u.noteOpen=n.id; renderPanel(); window.scrollTo(0,0); const ti=$('#noteTitle'); if(ti) ti.focus()}
   else if(a==='opennote'){u.noteOpen=b.dataset.id; renderPanel(); window.scrollTo(0,0)}
   else if(a==='closenote'){closeNote()}
+  else if(a==='notesview'){u.notesView=b.dataset.v; lsSet('daybook.notesView',u.notesView); renderPanel()}
+  else if(a==='planweek'){u.planWeek=addDays(u.planWeek||monday(today()),+b.dataset.n); renderPanel()}
+  else if(a==='plancopy'){const w=u.planWeek||monday(today()), pv=state.plans[addDays(w,-7)]; if(pv){state.plans[w]={days:pv.days.slice(),updated:new Date().toISOString()}; writeAll(); renderPanel(); toast('Copied last week\u2019s plan')}}
   else if(a==='edittrain'){
     const t=getDay(state.date).training.find(x=>x.id===b.dataset.id); if(!t) return;
     const str=v=>v==null||v===0?'':String(v);
@@ -1069,6 +1119,7 @@ document.addEventListener('input',e=>{
     t.classList.remove('off'); t.style.setProperty('--tc',inkFor(h,isDarkNow()));
     $('#hueName').textContent=hueName(h); const rb=document.querySelector('[data-action=texthue-reset]'); if(rb) rb.disabled=false;
   }
+  else if(t.dataset.plan!==undefined){const w=state.ui.planWeek||monday(today()), p=state.plans[w]||(state.plans[w]=getPlan(w)); p.days[+t.dataset.plan]=t.value; p.updated=new Date().toISOString(); autosize(t); setStatus('saving','Saving…'); clearTimeout(timers.all); timers.all=setTimeout(()=>{delete timers.all; writeAll()},600)}
   else if(t.dataset.note){const n=state.notes.find(x=>x.id===state.ui.noteOpen); if(n){n[t.dataset.note]=t.value; n.updated=new Date().toISOString(); setStatus('saving','Saving…'); clearTimeout(timers.all); timers.all=setTimeout(()=>{delete timers.all; writeAll()},600)}}
   else if(t.dataset.ex){const x=state.ui.exercises.find(e=>e.id===t.dataset.ex);
     if(x&&t.dataset.k==='n'){
@@ -1143,6 +1194,7 @@ function boot(){
   const days=lsGet('daybook.days')||{}; state.days={};
   Object.entries(days).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k)) state.days[k]=normalize(k,v)});
   const hs=lsGet('daybook.habits'); if(Array.isArray(hs)) state.habits=hs;
+  const pl=lsGet('daybook.plans'); if(pl&&typeof pl==='object') state.plans=pl;
   const ns=lsGet('daybook.notes'); if(Array.isArray(ns)) state.notes=ns.filter(n=>n&&n.id);
   applyTheme(currentTheme());
   applyTextColour();

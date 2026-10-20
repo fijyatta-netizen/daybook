@@ -1,6 +1,6 @@
 /* Daybook offline support: keeps a copy of the app on the phone so it opens with no connection.
    Your log entries are never sent anywhere; they stay in the phone's storage. */
-const CACHE = 'daybook-v21';
+const CACHE = 'daybook-v22';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
   './fonts/bricolage.woff2', './fonts/atkinson-400.woff2', './fonts/atkinson-700.woff2', './fonts/plexmono-500.woff2',
