@@ -217,7 +217,7 @@ textarea.bullets{min-height:96px}
 textarea.notebody{min-height:260px}
 .notehead{display:flex;justify-content:space-between;align-items:center;gap:10px}
 #noteTitle{font-weight:700;font-size:18px}
-.notesw{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:var(--sunk)}
+.notesw{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:12px;background:var(--sunk)}
 .notesw button{min-height:40px;border-radius:9px;font-weight:700;font-size:14px;color:var(--muted)}
 .notesw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.18)}
 .weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -242,6 +242,24 @@ textarea.notebody{min-height:260px}
 .remform{display:grid;gap:8px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
 .remform .row3{display:grid;grid-template-columns:auto 1fr;gap:8px}
 .remform input{min-width:0}
+.pairs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pair{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;display:grid;gap:4px;min-width:0}
+.pair h3{margin:0;font-family:var(--mono);font-weight:500;font-size:17px;overflow-wrap:anywhere}
+.pair p{margin:0;font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.pair .m{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.bias{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:var(--sunk);justify-self:start}
+.bias.long{color:#3fbf7f}.bias.short{color:#e5604f}
+.addpair{display:grid;grid-template-columns:1fr auto;gap:8px}
+.addpair input:not(:placeholder-shown){text-transform:uppercase;font-family:var(--mono)}
+.suggest{display:flex;flex-wrap:wrap;gap:6px}
+.suggest button{padding:7px 11px;border-radius:999px;border:1px dashed var(--line);font-family:var(--mono);font-size:13px;color:var(--muted)}
+.tentry{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.tentry header{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.tentry header b{font-family:var(--mono);font-weight:500;font-size:14px}
+.tentry .seg button{padding:5px 10px;font-size:13px}
+.tentry .seg button[data-v="Long"][aria-pressed="true"]{background:#3fbf7f;border-color:#3fbf7f}
+.tentry .seg button[data-v="Short"][aria-pressed="true"]{background:#e5604f;border-color:#e5604f}
+#pairName{font-family:var(--mono);font-weight:500;font-size:20px}
 .planday.today textarea{border-color:color-mix(in srgb,var(--train) 55%,var(--line))}
 .excount{display:flex;align-items:center;gap:10px}
 .excount input{width:76px;padding:9px 6px;text-align:center;font-family:var(--mono);background:var(--surface)}
@@ -342,8 +360,8 @@ const lsSet = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v)); if(typeof m
 
 const state = {
   date: today(), tab: lsGet('daybook.tab') || 'journal',
-  days: {}, habits: DEFAULT_HABITS, notes: [], plans: {}, reminders: [],
-  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, notesView:lsGet('daybook.notesView')||'notes', planWeek:null, remFor:null, tlLimit:40, search:''}
+  days: {}, habits: DEFAULT_HABITS, notes: [], plans: {}, reminders: [], pairs: [],
+  ui: {pendingPhotos:[], addTrain:false, addFood:false, editHabits:false, sport:'Run', kind:'Lunch', rating:0, rpe:6, exercises:[], editTrain:null, noteOpen:null, pairOpen:null, notesView:lsGet('daybook.notesView')||'notes', planWeek:null, remFor:null, tlLimit:40, search:''}
 };
 
 const emptyDay = date=>({date, mood:null, highlight:'', notes:'', learned:'', learnedNotes:'', training:[], food:[], habits:{}});
@@ -384,7 +402,7 @@ function setStatus(s,msg){const el=$('#status'); el.dataset.s=s; el.textContent=
 function statusIdle(){setStatus('saved','Saved on this phone')}
 function writeAll(){
   const out={}; Object.values(state.days).forEach(d=>{if(!isEmpty(d)) out[d.date]=d});
-  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); localStorage.setItem('daybook.plans',JSON.stringify(cleanPlans())); localStorage.setItem('daybook.reminders',JSON.stringify(state.reminders)); mirror(); statusIdle(); return true}
+  try{localStorage.setItem('daybook.days',JSON.stringify(out)); localStorage.setItem('daybook.habits',JSON.stringify(state.habits)); localStorage.setItem('daybook.notes',JSON.stringify(state.notes.filter(n=>!noteIsEmpty(n)))); localStorage.setItem('daybook.plans',JSON.stringify(cleanPlans())); localStorage.setItem('daybook.reminders',JSON.stringify(state.reminders)); localStorage.setItem('daybook.pairs',JSON.stringify(state.pairs)); mirror(); statusIdle(); return true}
   catch(e){setStatus('error','Phone storage is full. Export a backup, then delete old entries'); return false}
 }
 function changeDay(date,fn,{render:doRender=true,delay=0}={}){
@@ -495,7 +513,7 @@ document.addEventListener('input',e=>{
   }
   autosize(ta);
 });
-document.addEventListener('keydown',e=>{if(e.key!=='Enter'||!e.target) return; if(e.target.id==='exName'){e.preventDefault(); addExercise()} else if(e.target.id==='tAct'){e.preventDefault(); addActivity()} else if(e.target.dataset&&e.target.dataset.ex){e.preventDefault()}});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'||!e.target) return; if(e.target.id==='newPair'){e.preventDefault(); addPair(e.target.value)} else if(e.target.id==='exName'){e.preventDefault(); addExercise()} else if(e.target.id==='tAct'){e.preventDefault(); addActivity()} else if(e.target.dataset&&e.target.dataset.ex){e.preventDefault()}});
 
 /* ---------- backup ---------- */
 function toast(msg){const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>t.hidden=true,3200)}
@@ -505,7 +523,7 @@ async function buildBackup(){
   Object.values(state.days).forEach(d=>{if(!isEmpty(d)){days[d.date]=d; d.food.forEach(f=>(f.photos||[]).forEach(id=>ids.add(id)))}});
   const photos={};
   for(const id of ids){try{const b=await getPhoto(id); if(b) photos[id]=await blobToDataURL(b)}catch(e){}}
-  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),plans:cleanPlans(),reminders:state.reminders,days,photos};
+  const data={app:'Daybook',version:2,exported:new Date().toISOString(),habits:state.habits,notes:state.notes.filter(n=>!noteIsEmpty(n)),plans:cleanPlans(),reminders:state.reminders,pairs:state.pairs,days,photos};
   const name=`daybook-backup-${today()}.json`;
   return new File([JSON.stringify(data)],name,{type:'application/json'});
 }
@@ -572,9 +590,17 @@ function importBackup(file){
         if(!x||typeof x.id!=='string'||have.has(x.id)||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(x.at)) return;
         state.reminders.push({id:x.id,at:x.at,text:String(x.text||'Reminder').slice(0,200),note:typeof x.note==='string'?x.note:null,nid:Number.isInteger(x.nid)?x.nid:newNid()}); nr++})}
       if(nr) syncNotifications();
+      let ntp=0;
+      if(Array.isArray(data.pairs)) data.pairs.forEach(x=>{
+        if(!x||typeof x.id!=='string'||!x.name) return;
+        const inc={id:x.id,name:String(x.name).slice(0,24),levels:String(x.levels||''),updated:x.updated||'',
+          entries:(Array.isArray(x.entries)?x.entries:[]).filter(e=>e&&e.id&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)).map(e=>({id:e.id,date:e.date,bias:['Long','Short','Neutral'].includes(e.bias)?e.bias:'',text:String(e.text||''),updated:e.updated||''}))};
+        const i=state.pairs.findIndex(p=>p.id===inc.id);
+        if(i<0){state.pairs.push(inc); ntp++} else if((inc.updated||'')>(state.pairs[i].updated||'')){state.pairs[i]=inc; ntp++}
+      });
       if(Array.isArray(data.habits)){const ids=new Set(state.habits.map(h=>h.id)); data.habits.forEach(h=>{if(h&&h.id&&!ids.has(h.id)) state.habits.push({id:h.id,name:String(h.name||'Habit')})})}
       writeAll(); render();
-      toast(n||np||nn||npl||nr?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}${npl?`, ${npl} week plan${npl===1?'':'s'}`:''}${nr?`, ${nr} reminder${nr===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
+      toast(n||np||nn||npl||nr||ntp?`Restored ${n} day${n===1?'':'s'}${np?`, ${np} photo${np===1?'':'s'}`:''}${nn?`, ${nn} note${nn===1?'':'s'}`:''}${npl?`, ${npl} week plan${npl===1?'':'s'}`:''}${nr?`, ${nr} reminder${nr===1?'':'s'}`:''}${ntp?`, ${ntp} trading pair${ntp===1?'':'s'}`:''}`:'Backup loaded. Nothing newer to restore');
     }catch(e){toast('That file isn’t a Daybook backup')}
   };
   r.readAsText(file);
@@ -919,7 +945,7 @@ function remForm(key,date,text,withDate){
   return `<div class="remform" data-k="${esc(key)}">
     <div class="row3">${withDate?`<input type="date" id="remDate" value="${esc(date)}" aria-label="Reminder date">`:`<input type="hidden" id="remDate" value="${esc(date)}">`}<input type="time" id="remTime" value="${date===today()&&new Date().getHours()>=17?'20:00':'18:00'}" aria-label="Reminder time"${withDate?'':' style="grid-column:1"'}>${withDate?'':`<span></span>`}</div>
     <input id="remText" value="${esc(text)}" placeholder="What to remind you about" maxlength="200" autocomplete="off">
-    <div class="actions"><button type="button" class="btn plain" data-action="remcancel">Cancel</button><button type="button" class="btn" data-action="remsave" data-note="${key.startsWith('note:')?esc(key.slice(5)):''}">${NATIVE?'Save reminder':'Add to Calendar'}</button></div>
+    <div class="actions"><button type="button" class="btn plain" data-action="remcancel">Cancel</button><button type="button" class="btn" data-action="remsave" data-note="${key.startsWith('note:')?esc(key.slice(5)):key.startsWith('pair:')?esc(key):''}">${NATIVE?'Save reminder':'Add to Calendar'}</button></div>
     ${NATIVE?'':`<p class="hint">Your iPhone\u2019s Calendar will alert you at this time. Tap Add on the next screen.</p>`}
   </div>`;
 }
@@ -964,7 +990,49 @@ async function saveReminder(noteId){
 const planIsEmpty=p=>!p||!(p.days||[]).some(x=>cleanBullets(x));
 function cleanPlans(){const o={}; Object.entries(state.plans).forEach(([k,v])=>{if(!planIsEmpty(v)) o[k]=v}); return o}
 const getPlan=w=>state.plans[w]||{days:['','','','','','',''],updated:''};
-const notesSwitch=v=>`<div class="notesw" role="group" aria-label="Notes view"><button type="button" data-action="notesview" data-v="notes" aria-pressed="${v==='notes'}">Notes</button><button type="button" data-action="notesview" data-v="plan" aria-pressed="${v==='plan'}">Week plan</button></div>`;
+const notesSwitch=v=>`<div class="notesw" role="group" aria-label="Notes view"><button type="button" data-action="notesview" data-v="notes" aria-pressed="${v==='notes'}">Notes</button><button type="button" data-action="notesview" data-v="plan" aria-pressed="${v==='plan'}">Week plan</button><button type="button" data-action="notesview" data-v="trading" aria-pressed="${v==='trading'}">Trading</button></div>`;
+/* ---------- trading: notes per pair (a key-levels plan that stays on top, plus dated entries) ---------- */
+const PAIR_IDEAS=['EUR/USD','GBP/USD','USD/JPY','EUR/GBP','XAU/USD','UK 100'];
+const pairNorm=s=>String(s||'').trim().toUpperCase().replace(/\s+/g,' ').slice(0,24);
+const pairTouch=p=>{p.updated=new Date().toISOString()};
+const pairLast=p=>p.entries.slice().sort((a,b)=>(b.date+(b.updated||'')).localeCompare(a.date+(a.updated||'')))[0];
+function addPair(name){
+  name=pairNorm(name); if(!name){toast('Type a pair, e.g. EUR/USD'); return}
+  const have=state.pairs.find(p=>p.name.replace(/[^A-Z0-9]/g,'')===name.replace(/[^A-Z0-9]/g,''));
+  if(have){state.ui.pairOpen=have.id; renderPanel(); window.scrollTo(0,0); return}
+  const p={id:newId(),name,levels:'',entries:[],updated:''}; pairTouch(p); state.pairs.push(p); writeAll();
+  state.ui.pairOpen=p.id; renderPanel(); window.scrollTo(0,0);
+}
+function tradingPanel(){
+  const u=state.ui, p=u.pairOpen&&state.pairs.find(x=>x.id===u.pairOpen);
+  if(p){
+    const ents=p.entries.slice().sort((a,b)=>(b.date+(b.updated||'')).localeCompare(a.date+(a.updated||'')));
+    return `<div class="sechead"><h2>Notes</h2></div>
+    <section class="card">
+      <div class="notehead"><button class="btn plain" data-action="closepair">All pairs</button><button class="del" data-action="delpair" data-id="${p.id}">Delete pair</button></div>
+      <input id="pairName" data-pair="name" value="${esc(p.name)}" maxlength="24" autocomplete="off" aria-label="Pair">
+      <div class="field"><label class="label" for="pairLevels">Key levels &amp; plan</label>
+      <textarea id="pairLevels" class="bullets" data-pair="levels" placeholder="• Levels, zones, what you\u2019re waiting for">${esc(p.levels)}</textarea></div>
+      ${remRows(state.reminders.filter(r=>r.note==='pair:'+p.id),true)}${remForm('pair:'+p.id,today(),p.name+': check the chart',true)}
+    </section>
+    <div class="sechead"><h2 style="font-size:18px">Entries</h2><span class="hint">${ents.length?ents.length+' entr'+(ents.length===1?'y':'ies'):''}</span></div>
+    <button class="btn ghost" data-action="newentry">New entry</button>
+    ${ents.length?`<div class="tl">${ents.map(e=>`<div class="tentry"><header><b>${esc(shortDate(e.date))}</b>
+      <div class="seg" role="group" aria-label="Bias">${['Long','Short','Neutral'].map(v=>`<button type="button" data-action="bias" data-id="${e.id}" data-v="${v}" aria-pressed="${e.bias===v}">${v}</button>`).join('')}</div></header>
+      <textarea class="bullets" data-entry="${e.id}" placeholder="• What you saw, the setup, what you did and why">${esc(e.text)}</textarea>
+      <button class="del" style="justify-self:end" data-action="delentry" data-id="${e.id}">Delete entry</button></div>`).join('')}</div>`
+    :`<div class="empty"><b>No entries yet</b>Tap New entry to note what you see on ${esc(p.name)} today.</div>`}`;
+  }
+  const list=state.pairs.slice().sort((a,b)=>(b.updated||'').localeCompare(a.updated||''));
+  const ideas=PAIR_IDEAS.filter(n=>!state.pairs.some(p=>p.name===n));
+  return `<div class="sechead"><h2>Notes</h2><span class="hint">${list.length?list.length+' pair'+(list.length===1?'':'s'):''}</span></div>
+  ${notesSwitch('trading')}
+  <div class="addpair"><input id="newPair" placeholder="Add a pair, e.g. EUR/USD" maxlength="24" autocomplete="off" autocapitalize="characters" aria-label="New pair"><button class="btn" data-action="addpair">Add</button></div>
+  ${list.length?'':`<div class="suggest">${ideas.map(n=>`<button type="button" data-action="addpair" data-v="${esc(n)}">+ ${esc(n)}</button>`).join('')}</div>`}
+  ${list.length?`<div class="pairs">${list.map(p=>{const l=pairLast(p), prev=l?String(l.text||'').split('\n').map(x=>x.replace(/^•\s*/,'').trim()).filter(Boolean).join(' \u00b7 '):'';
+    return `<button class="pair" data-action="openpair" data-id="${p.id}"><h3>${esc(p.name)}</h3>${l?`<span class="m">${esc(shortDate(l.date))}</span>`:'<span class="m">No entries yet</span>'}${l&&l.bias?`<span class="bias ${l.bias.toLowerCase()}">${l.bias}</span>`:''}${prev?`<p>${esc(prev)}</p>`:''}</button>`}).join('')}</div>`
+  :`<div class="empty"><b>No pairs yet</b>Add the pairs you trade. Each one gets its own key levels and dated notes.</div>`}`;
+}
 function weekLabel(w){
   const a=parseIso(w), b=parseIso(addDays(w,6)), m=d=>d.toLocaleDateString('en-GB',{month:'short'});
   const range=a.getMonth()===b.getMonth()?`${a.getDate()}\u2013${b.getDate()} ${m(b)}`:`${a.getDate()} ${m(a)} \u2013 ${b.getDate()} ${m(b)}`;
@@ -989,6 +1057,7 @@ function planPanel(){
 }
 function notesPanel(){
   if(state.ui.notesView==='plan'&&!state.ui.noteOpen) return planPanel();
+  if(state.ui.notesView==='trading'&&!state.ui.noteOpen) return tradingPanel();
   const u=state.ui, n=u.noteOpen&&state.notes.find(x=>x.id===u.noteOpen);
   if(n) return `<div class="sechead"><h2>Notes</h2></div>
   <section class="card">
@@ -1099,7 +1168,7 @@ function hueName(h){
 }
 function settingsPanel(){
   return `<div class="sechead"><h2>Settings</h2></div>${appearanceCard()}
-  <p class="hint" style="text-align:center;margin-top:8px">Daybook v23 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
+  <p class="hint" style="text-align:center;margin-top:8px">Daybook v24 · © ${Math.max(2026,new Date().getFullYear())} Fyat. All rights reserved.</p>`;
 }
 function appearanceCard(){
   const t=currentTheme(), opt=[['light','Light'],['dark','Dark'],['system','Match phone']];
@@ -1147,6 +1216,11 @@ document.addEventListener('click',e=>{
   else if(a==='remcancel'){u.remFor=null; renderPanel()}
   else if(a==='remsave'){saveReminder(b.dataset.note||null)}
   else if(a==='delrem'){const r=state.reminders.find(x=>x.id===b.dataset.id); if(r){cancelRem(r); state.reminders=state.reminders.filter(x=>x!==r); writeAll(); renderPanel(); toast(NATIVE?'Reminder deleted':'Reminder deleted. Remove it from Calendar too if you added it')}}
+  else if(a==='addpair'){addPair(b.dataset.v||($('#newPair')||{}).value)}
+  else if(a==='openpair'){u.pairOpen=b.dataset.id; u.remFor=null; renderPanel(); window.scrollTo(0,0)}
+  else if(a==='closepair'){u.pairOpen=null; u.remFor=null; writeAll(); renderPanel(); window.scrollTo(0,0)}
+  else if(a==='newentry'){const p=state.pairs.find(x=>x.id===u.pairOpen); if(p){const e={id:newId(),date:today(),bias:'',text:'',updated:new Date().toISOString()}; p.entries.push(e); pairTouch(p); writeAll(); renderPanel(); const t=document.querySelector(`[data-entry="${e.id}"]`); if(t) t.focus()}}
+  else if(a==='bias'){const p=state.pairs.find(x=>x.id===u.pairOpen), e=p&&p.entries.find(x=>x.id===b.dataset.id); if(e){e.bias=e.bias===b.dataset.v?'':b.dataset.v; e.updated=new Date().toISOString(); pairTouch(p); writeAll(); const keep=keepForm('panel'); renderPanel(); keep()}}
   else if(a==='notesview'){u.notesView=b.dataset.v; lsSet('daybook.notesView',u.notesView); renderPanel()}
   else if(a==='planweek'){u.remFor=null; u.planWeek=addDays(u.planWeek||monday(today()),+b.dataset.n); renderPanel()}
   else if(a==='plancopy'){const w=u.planWeek||monday(today()), pv=state.plans[addDays(w,-7)]; if(pv){state.plans[w]={days:pv.days.slice(),updated:new Date().toISOString()}; writeAll(); renderPanel(); toast('Copied last week\u2019s plan')}}
@@ -1186,8 +1260,10 @@ document.addEventListener('click',e=>{
     const inp=$('#svHandoff'); const done=()=>toast('Code copied');
     try{navigator.clipboard.writeText(inp.value).then(done,()=>{inp.select(); document.execCommand('copy'); done()})}catch(e){inp.select()}
   }
-  else if(a==='del'||a==='delhabit'||a==='rmphoto'||a==='svoff'||a==='delnote'){
+  else if(a==='del'||a==='delhabit'||a==='rmphoto'||a==='svoff'||a==='delnote'||a==='delpair'||a==='delentry'){
     if(!b.dataset.armed){b.dataset.armed='1'; const old=b.textContent; b.textContent='Tap again'; setTimeout(()=>{if(b.isConnected){delete b.dataset.armed; b.textContent=old}},3000); return}
+    if(a==='delentry'){const p=state.pairs.find(x=>x.id===u.pairOpen); if(p){p.entries=p.entries.filter(x=>x.id!==b.dataset.id); pairTouch(p); writeAll(); renderPanel(); toast('Entry deleted')} return}
+    if(a==='delpair'){const id=b.dataset.id; state.reminders.filter(r=>r.note==='pair:'+id).forEach(cancelRem); state.reminders=state.reminders.filter(r=>r.note!=='pair:'+id); state.pairs=state.pairs.filter(p=>p.id!==id); u.pairOpen=null; writeAll(); renderPanel(); toast('Pair deleted'); return}
     if(a==='delnote'){state.reminders.filter(r=>r.note===b.dataset.id).forEach(cancelRem); state.reminders=state.reminders.filter(r=>r.note!==b.dataset.id); state.notes=state.notes.filter(n=>n.id!==b.dataset.id); u.noteOpen=null; writeAll(); renderPanel(); toast('Note deleted'); return}
     if(a==='svoff'){
       const s=sv(); if(s.access) fetch(STRAVA+'/oauth/deauthorize',{method:'POST',headers:{Authorization:'Bearer '+s.access}}).catch(()=>{});
@@ -1224,6 +1300,10 @@ document.addEventListener('input',e=>{
     $('#hueName').textContent=hueName(h); const rb=document.querySelector('[data-action=texthue-reset]'); if(rb) rb.disabled=false;
   }
   else if(t.dataset.plan!==undefined){const w=state.ui.planWeek||monday(today()), p=state.plans[w]||(state.plans[w]=getPlan(w)); p.days[+t.dataset.plan]=t.value; p.updated=new Date().toISOString(); autosize(t); setStatus('saving','Saving…'); clearTimeout(timers.all); timers.all=setTimeout(()=>{delete timers.all; writeAll()},600)}
+  else if(t.dataset.pair||t.dataset.entry){const p=state.pairs.find(x=>x.id===state.ui.pairOpen); if(p){
+      if(t.dataset.entry){const e=p.entries.find(x=>x.id===t.dataset.entry); if(e){e.text=t.value; e.updated=new Date().toISOString()}}
+      else p[t.dataset.pair]=t.dataset.pair==='name'?(pairNorm(t.value)||p.name):t.value;
+      pairTouch(p); if(t.tagName==='TEXTAREA') autosize(t); setStatus('saving','Saving…'); clearTimeout(timers.all); timers.all=setTimeout(()=>{delete timers.all; writeAll()},600)}}
   else if(t.dataset.note){const n=state.notes.find(x=>x.id===state.ui.noteOpen); if(n){n[t.dataset.note]=t.value; n.updated=new Date().toISOString(); setStatus('saving','Saving…'); clearTimeout(timers.all); timers.all=setTimeout(()=>{delete timers.all; writeAll()},600)}}
   else if(t.dataset.ex){const x=state.ui.exercises.find(e=>e.id===t.dataset.ex);
     if(x&&t.dataset.k==='n'){
@@ -1298,6 +1378,7 @@ function boot(){
   const days=lsGet('daybook.days')||{}; state.days={};
   Object.entries(days).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k)) state.days[k]=normalize(k,v)});
   const hs=lsGet('daybook.habits'); if(Array.isArray(hs)) state.habits=hs;
+  const tp=lsGet('daybook.pairs'); if(Array.isArray(tp)) state.pairs=tp.filter(p=>p&&p.id&&p.name).map(p=>Object.assign({levels:'',entries:[]},p,{entries:Array.isArray(p.entries)?p.entries:[]}));
   const rm=lsGet('daybook.reminders'); if(Array.isArray(rm)) state.reminders=rm.filter(r=>r&&r.id&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(r.at));
   const pl=lsGet('daybook.plans'); if(pl&&typeof pl==='object') state.plans=pl;
   const ns=lsGet('daybook.notes'); if(Array.isArray(ns)) state.notes=ns.filter(n=>n&&n.id);
